@@ -3,31 +3,52 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-[RequireComponent(typeof(Animator))]
-[RequireComponent(typeof(PlayerControl))]
+//[RequireComponent(typeof(Animator))]
+//[RequireComponent(typeof(PlayerControl))]
 public class PlayerAnimViewControl : MonoBehaviour {
     private PlayerControl m_PlayerControl;
+    private Player m_Player;
     private Animator m_Anim;
 
     private void Awake() {
         m_PlayerControl = GetComponent<PlayerControl>();
         m_Anim = GetComponent<Animator>();
+        m_Player = GetComponent<Player>();
     }
 
     private void OnEnable() {
-        m_PlayerControl.PlayAnim_IDLE += OnPlayIdle;
-        m_PlayerControl.PlayAnim_RUN += OnPlayRun;
-        m_PlayerControl.PlayAnim_JUMP += OnPlayJump;
-        m_PlayerControl.PlayAnim_ATTACK += OnPlayAttack;
-        m_PlayerControl.PlayAnim_SLIDE += OnPlaySlide;
+        if (m_PlayerControl != null) {
+            m_PlayerControl.PlayAnim_IDLE += OnPlayIdle;
+            m_PlayerControl.PlayAnim_RUN += OnPlayRun;
+            m_PlayerControl.PlayAnim_JUMP += OnPlayJump;
+            m_PlayerControl.PlayAnim_ATTACK += OnPlayAttack;
+            m_PlayerControl.PlayAnim_SLIDE += OnPlaySlide;
+        }
+
+        if (m_Player != null) {
+            m_Player.PlayAnim_IDLE += OnPlayIdle;
+            m_Player.PlayAnim_RUN += OnPlayRun;
+            m_Player.PlayAnim_JUMP += OnPlayJump;
+            m_Player.PlayAnim_ATTACK += OnPlayAttack;
+            m_Player.PlayAnim_SLIDE += OnPlaySlide;
+        }
     }
 
     private void OnDisable() {
-        m_PlayerControl.PlayAnim_IDLE -= OnPlayIdle;
-        m_PlayerControl.PlayAnim_RUN -= OnPlayRun;
-        m_PlayerControl.PlayAnim_JUMP -= OnPlayJump;
-        m_PlayerControl.PlayAnim_ATTACK -= OnPlayAttack;
-        m_PlayerControl.PlayAnim_SLIDE -= OnPlaySlide;
+        if (m_PlayerControl != null) {
+            m_PlayerControl.PlayAnim_IDLE -= OnPlayIdle;
+            m_PlayerControl.PlayAnim_RUN -= OnPlayRun;
+            m_PlayerControl.PlayAnim_JUMP -= OnPlayJump;
+            m_PlayerControl.PlayAnim_ATTACK -= OnPlayAttack;
+            m_PlayerControl.PlayAnim_SLIDE -= OnPlaySlide;
+        }
+        if (m_Player != null) {
+            m_Player.PlayAnim_IDLE -= OnPlayIdle;
+            m_Player.PlayAnim_RUN -= OnPlayRun;
+            m_Player.PlayAnim_JUMP -= OnPlayJump;
+            m_Player.PlayAnim_ATTACK -= OnPlayAttack;
+            m_Player.PlayAnim_SLIDE -= OnPlaySlide;
+        }
     }
 
     private void OnPlayIdle() {

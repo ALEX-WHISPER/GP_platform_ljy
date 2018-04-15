@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 
-[RequireComponent(typeof(PlayerControl))]
+//[RequireComponent(typeof(PlayerControl))]
 public class UserInputControl : MonoBehaviour {
     public KeyCode keyCode_JUMP = KeyCode.Space;
     public KeyCode keyCode_ATTACK = KeyCode.A;

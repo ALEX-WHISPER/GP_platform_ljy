@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-[RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(UserInputControl))]
-[RequireComponent(typeof(PlayerAnimViewControl))]
+//[RequireComponent(typeof(Rigidbody2D))]
+//[RequireComponent(typeof(UserInputControl))]
+//[RequireComponent(typeof(PlayerAnimViewControl))]
 
 public class PlayerControl : MonoBehaviour {
     #region Anim Events
