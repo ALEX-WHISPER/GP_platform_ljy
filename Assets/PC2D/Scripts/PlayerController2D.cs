@@ -54,6 +54,9 @@ public class PlayerController2D : MonoBehaviour
         {
             _motor.Jump();
             _motor.DisableRestrictedArea();
+
+            if (_motor.IsOnLadder())
+                _motor.LadderAreaExit();
         }
 
         _motor.jumpingHeld = Input.GetButton(PC2D.Input.JUMP);
@@ -117,6 +120,10 @@ public class PlayerController2D : MonoBehaviour
         if (Input.GetButtonDown(PC2D.Input.DASH))
         {
             _motor.Dash();
+        }
+
+        if (Input.GetKeyDown(KeyCode.A)) {
+            _motor.Attack();
         }
     }
 }

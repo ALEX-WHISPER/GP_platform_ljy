@@ -84,10 +84,16 @@ namespace PC2D
                     _animator.Play("Dash");
                     //_animator.SetTrigger("slide");
                     _animator.Play("PlayerSlide");
-                }
-                else
+                } else if (_motor.motorState == PlatformerMotor2D.MotorState.NormalAttack) {
+                    _animator.SetTrigger("attack");
+                } else
                 {
-                    _animator.SetFloat("speed", _motor.velocity.sqrMagnitude);
+                    if (_motor.IsOnLadder()) {
+                        _animator.SetBool("isOnLadder", true);
+                    } else {
+                        _animator.SetFloat("speed", _motor.velocity.sqrMagnitude);
+                        _animator.SetBool("isOnLadder", false);
+                    }
 
                     if (_motor.velocity.sqrMagnitude >= 0.1f * 0.1f)
                     {

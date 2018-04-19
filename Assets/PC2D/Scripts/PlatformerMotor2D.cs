@@ -382,7 +382,11 @@ public class PlatformerMotor2D : MonoBehaviour
         Dashing,
         Frozen,
         Slipping,
-        FreedomState
+        FreedomState,
+
+        NormalAttack,
+        JumpAttack,
+        ClimbLadder
     }
 
     /// <summary>
@@ -642,6 +646,19 @@ public class PlatformerMotor2D : MonoBehaviour
     /// The normal of the slope the motor is on. This value doesn't have meaning unless onSlope is true.
     /// </summary>
     public Vector2 slopeNormal;
+
+    public void Attack() {
+        if (!IsOnGround()) {
+            EndJump();
+            //motorState = MotorState.JumpAttack;
+        } else {
+            motorState = MotorState.NormalAttack;
+        }
+    }
+
+    public void ClimbLadder() {
+        motorState = MotorState.ClimbLadder;
+    }
 
     /// <summary>
     /// Call this to have the GameObject try to jump, once called it will be handled in the FixedUpdate tick. The y axis is
