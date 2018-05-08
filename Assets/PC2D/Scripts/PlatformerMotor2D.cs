@@ -276,6 +276,11 @@ public class PlatformerMotor2D : MonoBehaviour
     [Range(0f, 1f)]
     public float wallInteractionThreshold = 0.5f;
 
+    #region Attacking values
+    public float waveCooldown = 0.3f;
+    public float throwCooldown = 0.4f;
+    #endregion
+
     /// <summary>
     /// Is dashing allowed?
     /// </summary>
@@ -384,8 +389,12 @@ public class PlatformerMotor2D : MonoBehaviour
         Slipping,
         FreedomState,
 
-        NormalAttack,
-        JumpAttack,
+        NormalWave,
+        JumpWave,
+
+        NormalThrow,
+        JumpThrow,
+
         ClimbLadder
     }
 
@@ -647,12 +656,54 @@ public class PlatformerMotor2D : MonoBehaviour
     /// </summary>
     public Vector2 slopeNormal;
 
-    public void Attack() {
+    public void Wave() {
+        if (!CanWave()) {
+            Debug.Log("Wave is cooling...");
+            return;
+        }
+
         if (!IsOnGround()) {
-            EndJump();
-            //motorState = MotorState.JumpAttack;
+            motorState = MotorState.JumpWave;
         } else {
-            motorState = MotorState.NormalAttack;
+            motorState = MotorState.NormalWave;
+        }
+    }
+
+    public bool CanWave() {
+        return _waving.cooldownFrames < 0;
+    }
+
+    public void EndWave() {
+        if (IsWaving()) {
+            _waving.cooldownFrames = GetFrameCount(waveCooldown);
+            ChangeState(IsGrounded() ? MotorState.OnGround : MotorState.Falling);
+        }
+    }
+
+    public void EndJumpAttack() {
+        motorState = MotorState.Jumping;
+    }
+
+    public void Throw() {
+        if (!CanThrow()) {
+            Debug.Log("Throw is cooling... cooldownFrames: " + _waving.cooldownFrames);
+            return;
+        }
+        if (!IsOnGround()) {
+            motorState = MotorState.JumpThrow;
+        } else {
+            motorState = MotorState.NormalThrow;
+        }
+    }
+
+    public bool CanThrow() {
+        return _throwing.cooldownFrames < 0;
+    }
+
+    public void EndThrow() {
+        if (IsThrowing()) {
+            _throwing.cooldownFrames = GetFrameCount(throwCooldown);
+            ChangeState(IsGrounded() ? MotorState.OnGround : MotorState.Falling);
         }
     }
 
@@ -940,6 +991,14 @@ public class PlatformerMotor2D : MonoBehaviour
     // Quering motor
     //
 
+    public bool IsWaving() {
+        return motorState == MotorState.NormalWave || motorState == MotorState.JumpWave;
+    }
+
+    public bool IsThrowing() {
+        return motorState == MotorState.NormalThrow || motorState == MotorState.JumpThrow;
+    }
+
     ///<summary>
     /// Is the motor Dashing?
     ///</summary>
@@ -1184,7 +1243,18 @@ public class PlatformerMotor2D : MonoBehaviour
         public bool force;
         public float gravityEnabledFrames;
     }
+
+    private class WaveState {
+        public float cooldownFrames;
+    }
+
+    private class ThrowState {
+        public float cooldownFrames;
+    }
+
     private DashState _dashing = new DashState();
+    private WaveState _waving = new WaveState();
+    private ThrowState _throwing = new ThrowState();
 
     // Contains information for wall sticks, slides, and corner grabs.
     private class WallState
@@ -1351,6 +1421,9 @@ public class PlatformerMotor2D : MonoBehaviour
         _jumping.jumpGraceFrames--;
         _jumping.timeToldFrames--;
         _jumping.allowExtraFrames--;
+
+        _waving.cooldownFrames--;
+        _throwing.cooldownFrames--;
     }
 
     private void ReadjustTimers(float multiplier)
@@ -1561,6 +1634,14 @@ public class PlatformerMotor2D : MonoBehaviour
         if (IsDashing() && _dashing.dashingFrames <= 0)
         {
             EndDash();
+        }
+
+        if (IsWaving() && _waving.cooldownFrames <= 0) {
+            EndWave();
+        }
+
+        if (IsThrowing() && _throwing.cooldownFrames <= 0) {
+            EndThrow();
         }
 
         UpdateSurroundings(forceSurroundingsCheck);

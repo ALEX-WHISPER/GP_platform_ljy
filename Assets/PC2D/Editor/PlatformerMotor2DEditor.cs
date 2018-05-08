@@ -29,6 +29,7 @@ public class PlatformerMotor2DEditor : Editor
     private static bool _showJumping;
     private static bool _showWallInteractions;
     private static bool _showDashing;
+    private static bool _showAttacking;
     private static bool _showInformation;
 
     #region Properties
@@ -113,6 +114,9 @@ public class PlatformerMotor2DEditor : Editor
     private readonly Property DASH_DURATION = new Property("dashDuration", "Dash Duration");
     private readonly Property DASH_COOLDOWN = new Property("dashCooldown", "Dash Cooldown");
     private readonly Property END_DASH_DELAY = new Property("endDashNoGravityDuration", "Gravity Delay After Dash");
+
+    private readonly Property WAVE_COOLDOWN = new Property("waveCooldown", "Wave Cooldown");
+    private readonly Property THROW_COOLDOWN = new Property("throwCooldown", "Throw Cooldown");
     #endregion
 
     private void OnEnable()
@@ -321,6 +325,14 @@ public class PlatformerMotor2DEditor : Editor
                 DisplayRegularField(DASH_EASING_FUNCTION);
                 DisplayTimingField(END_DASH_DELAY);
             }
+
+            EditorGUILayout.Separator();
+        }
+
+        _showAttacking = EditorGUILayout.Foldout(_showAttacking, "Attacking");
+        if (_showAttacking) {
+            DisplayTimingField(WAVE_COOLDOWN);
+            DisplayTimingField(THROW_COOLDOWN);
 
             EditorGUILayout.Separator();
         }

@@ -122,8 +122,12 @@ public class PlayerController2D : MonoBehaviour
             _motor.Dash();
         }
 
-        if (Input.GetKeyDown(KeyCode.A)) {
-            _motor.Attack();
+        if (Input.GetKeyDown(PC2D.Input.WAVE_DAGGER)) {
+            _motor.Wave();
+        }
+
+        if (Input.GetKeyDown(PC2D.Input.THROW_DAGGER)) {
+            _motor.Throw();
         }
     }
 }

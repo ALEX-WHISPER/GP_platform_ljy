@@ -62,32 +62,30 @@ namespace PC2D
                 visualChild.transform.rotation = Quaternion.identity;
 
                 if (_motor.motorState == PlatformerMotor2D.MotorState.Falling ||
-                                 _motor.motorState == PlatformerMotor2D.MotorState.FallingFast)
-                {
+                                 _motor.motorState == PlatformerMotor2D.MotorState.FallingFast) {
                     _animator.Play("Fall");
-                }
-                else if (_motor.motorState == PlatformerMotor2D.MotorState.WallSliding ||
-                         _motor.motorState == PlatformerMotor2D.MotorState.WallSticking)
-                {
+                } else if (_motor.motorState == PlatformerMotor2D.MotorState.WallSliding ||
+                           _motor.motorState == PlatformerMotor2D.MotorState.WallSticking) {
                     _animator.Play("Cling");
-                }
-                else if (_motor.motorState == PlatformerMotor2D.MotorState.OnCorner)
-                {
+                } else if (_motor.motorState == PlatformerMotor2D.MotorState.OnCorner) {
                     _animator.Play("On Corner");
-                }
-                else if (_motor.motorState == PlatformerMotor2D.MotorState.Slipping)
-                {
+                } else if (_motor.motorState == PlatformerMotor2D.MotorState.Slipping) {
                     _animator.Play("Slip");
-                }
-                else if (_motor.motorState == PlatformerMotor2D.MotorState.Dashing)
-                {
+                } else if (_motor.motorState == PlatformerMotor2D.MotorState.Dashing) {
                     _animator.Play("Dash");
-                    //_animator.SetTrigger("slide");
                     _animator.Play("PlayerSlide");
-                } else if (_motor.motorState == PlatformerMotor2D.MotorState.NormalAttack) {
-                    _animator.SetTrigger("attack");
-                } else
-                {
+                } else if (_motor.motorState == PlatformerMotor2D.MotorState.NormalWave) {
+                    _animator.SetTrigger("wave");
+                } else if (_motor.motorState == PlatformerMotor2D.MotorState.JumpWave) {
+                    _animator.SetTrigger("jumpWave");
+                    _motor.EndJumpAttack();
+                } else if (_motor.motorState == PlatformerMotor2D.MotorState.NormalThrow) {
+                    _animator.SetTrigger("throw");
+                } else if (_motor.motorState == PlatformerMotor2D.MotorState.JumpThrow) {
+                    _animator.SetTrigger("jumpThrow");
+                    _motor.EndJumpAttack();
+
+                } else {
                     if (_motor.IsOnLadder()) {
                         _animator.SetBool("isOnLadder", true);
                     } else {
@@ -95,12 +93,9 @@ namespace PC2D
                         _animator.SetBool("isOnLadder", false);
                     }
 
-                    if (_motor.velocity.sqrMagnitude >= 0.1f * 0.1f)
-                    {
+                    if (_motor.velocity.sqrMagnitude >= 0.1f * 0.1f) {
                         _animator.Play("Walk");
-                    }
-                    else
-                    {
+                    } else {
                         _animator.Play("Idle");
                     }
                 }
