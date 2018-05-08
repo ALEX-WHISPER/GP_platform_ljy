@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Dagger
+  - Sword
   layers:
   - Default
   - TransparentFX
@@ -17,7 +19,7 @@ TagManager:
   - Player
   - Static Environment
   - MovingPlatform
-  - 
+  - Tackle
   - 
   - 
   - 

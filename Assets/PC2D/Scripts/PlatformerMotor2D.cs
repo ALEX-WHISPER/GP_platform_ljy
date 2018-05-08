@@ -7,6 +7,11 @@ public class PlatformerMotor2D : MonoBehaviour
 {
     #region Public
 
+    public bool _isWaveEnabled;
+    public bool _isThrowEnabled;
+    public event Action OnFireSkill_WaveSword;
+    public event Action OnFireSkill_ThrowDaggers;
+
     /// <summary>
     /// The static environment check mask. This should only be environment that doesn't move.
     /// </summary>
@@ -658,7 +663,6 @@ public class PlatformerMotor2D : MonoBehaviour
 
     public void Wave() {
         if (!CanWave()) {
-            Debug.Log("Wave is cooling...");
             return;
         }
 
@@ -667,10 +671,16 @@ public class PlatformerMotor2D : MonoBehaviour
         } else {
             motorState = MotorState.NormalWave;
         }
-    }
 
+        if (OnFireSkill_WaveSword != null) {
+            OnFireSkill_WaveSword();
+        }
+    }
+    
     public bool CanWave() {
-        return _waving.cooldownFrames < 0;
+        if (!_isWaveEnabled) { Debug.Log("unable to wave sword"); }
+        if (_waving.cooldownFrames < 0) { Debug.Log("wave is cooling..."); }
+        return _waving.cooldownFrames < 0 && _isWaveEnabled;
     }
 
     public void EndWave() {
@@ -686,7 +696,6 @@ public class PlatformerMotor2D : MonoBehaviour
 
     public void Throw() {
         if (!CanThrow()) {
-            Debug.Log("Throw is cooling... cooldownFrames: " + _waving.cooldownFrames);
             return;
         }
         if (!IsOnGround()) {
@@ -694,10 +703,16 @@ public class PlatformerMotor2D : MonoBehaviour
         } else {
             motorState = MotorState.NormalThrow;
         }
-    }
 
+        if (OnFireSkill_ThrowDaggers != null) {
+            OnFireSkill_ThrowDaggers();
+        }
+    }
+    
     public bool CanThrow() {
-        return _throwing.cooldownFrames < 0;
+        if (!_isThrowEnabled) { Debug.Log("unable to throw daggers"); }
+        if (_throwing.cooldownFrames < 0) { Debug.Log("throw is cooling..."); }
+        return _throwing.cooldownFrames < 0 && this._isThrowEnabled;
     }
 
     public void EndThrow() {
@@ -1156,7 +1171,7 @@ public class PlatformerMotor2D : MonoBehaviour
     // This is the unconverted motor velocity. This ignores slopes. It is converted into the appropriate vector before
     // moving.
     private Vector2 _velocity;
-
+    
     // The function is cached to avoid unnecessary memory allocation.
     private EasingFunctions.EasingFunc _dashFunction;
     private EasingFunctions.EasingFunc _dashDerivativeFunction;
