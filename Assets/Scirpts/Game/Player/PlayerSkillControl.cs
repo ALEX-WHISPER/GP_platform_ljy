@@ -3,15 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerSkillControl : MonoBehaviour {
-    public Sprite tackleSprite_Dagger;
-    public Sprite tackleSprite_Sword;
-
     private PlatformerMotor2D _motor;
-    private InventoryManager inventoryManager;
+    private static PlayerSkillControl _instance = null;
+
+    public static PlayerSkillControl GetInstance {
+        get {
+            if (_instance == null) {
+                _instance = FindObjectOfType<PlayerSkillControl>();
+
+                if (_instance == null) {
+                    GameObject go = new GameObject("PlayerSkillControl");
+                    go.AddComponent<PlayerSkillControl>();
+                    DontDestroyOnLoad(go);
+                }
+            }
+            return _instance;
+        }
+    }
 
     private void Awake() {
         _motor = GetComponent<PlatformerMotor2D>();
-        inventoryManager = InventoryManager.GetInstance;
     }
 
     private void OnEnable() {
@@ -20,18 +31,8 @@ public class PlayerSkillControl : MonoBehaviour {
     }
 
     private void OnFireSkill_WaveSword() {
-        SkillSlot swordSlot = (SkillSlot)inventoryManager.GetAvailableSlot();
-        swordSlot.SetSlotImage(tackleSprite_Sword);
-        swordSlot.SetSkillCooldownDuration(_motor.waveCooldown);
-
-        swordSlot.FillSlot();
     }
 
     private void OnFireSkill_ThrowDagger() {
-        SkillSlot daggerSlot = (SkillSlot)inventoryManager.GetAvailableSlot();
-        daggerSlot.SetSlotImage(tackleSprite_Dagger);
-        daggerSlot.SetSkillCooldownDuration(_motor.throwCooldown);
-
-        daggerSlot.FillSlot();
     }
 }

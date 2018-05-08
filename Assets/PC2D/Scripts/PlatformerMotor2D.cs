@@ -679,7 +679,7 @@ public class PlatformerMotor2D : MonoBehaviour
     
     public bool CanWave() {
         if (!_isWaveEnabled) { Debug.Log("unable to wave sword"); }
-        if (_waving.cooldownFrames < 0) { Debug.Log("wave is cooling..."); }
+        if (_waving.cooldownFrames >= 0) { Debug.Log("wave is cooling..."); }
         return _waving.cooldownFrames < 0 && _isWaveEnabled;
     }
 
@@ -711,7 +711,7 @@ public class PlatformerMotor2D : MonoBehaviour
     
     public bool CanThrow() {
         if (!_isThrowEnabled) { Debug.Log("unable to throw daggers"); }
-        if (_throwing.cooldownFrames < 0) { Debug.Log("throw is cooling..."); }
+        if (_throwing.cooldownFrames >= 0) { Debug.Log("throw is cooling..."); }
         return _throwing.cooldownFrames < 0 && this._isThrowEnabled;
     }
 

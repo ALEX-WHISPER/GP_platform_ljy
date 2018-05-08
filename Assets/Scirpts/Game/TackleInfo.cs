@@ -1,16 +1,11 @@
 ﻿using UnityEngine;
 using System;
 
-public enum TackleType {
-    SWORD = 0,
-    DAGGER = 1
-}
-
 [Serializable]
 public class TackleInfo: MonoBehaviour {
-    public TackleType tackleType;
     public bool isPicked;
     public string tagName;
+    public Sprite tackleSprite;
     
     [HideInInspector]
     public event Action onPickUp;

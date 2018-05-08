@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class InventoryManager : MonoBehaviour {
     public List<InventorySlot> slots;
-    private Queue<InventorySlot> availableSlots;
+    public List<InventorySlot> usedSlots = new List<InventorySlot>();
+
+    private Queue<InventorySlot> availableSlots = new Queue<InventorySlot>();
     private static InventoryManager _instance = null;
 
     public static InventoryManager GetInstance {
@@ -19,15 +21,6 @@ public class InventoryManager : MonoBehaviour {
                 }
             }
             return _instance;
-        }
-    }
-
-    void Awake() {
-        if (_instance == null) {
-            _instance = this;
-            DontDestroyOnLoad(this.gameObject);
-        } else {
-            Destroy(gameObject);
         }
     }
 

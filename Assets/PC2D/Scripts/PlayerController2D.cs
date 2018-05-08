@@ -122,7 +122,7 @@ public class PlayerController2D : MonoBehaviour
             _motor.Dash();
         }
 
-        if (Input.GetKeyDown(PC2D.Input.WAVE_DAGGER)) {
+        if (Input.GetKeyDown(PC2D.Input.WAVE_SWORD)) {
             _motor.Wave();
         }
 
