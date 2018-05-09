@@ -9,8 +9,8 @@ public class PlatformerMotor2D : MonoBehaviour
 
     public bool _isWaveEnabled;
     public bool _isThrowEnabled;
-    public event Action OnFireSkill_WaveSword;
-    public event Action OnFireSkill_ThrowDaggers;
+    public bool _isDashEnabled;
+    public event Action<TackleContent> OnFireSkill;
 
     /// <summary>
     /// The static environment check mask. This should only be environment that doesn't move.
@@ -566,7 +566,11 @@ public class PlatformerMotor2D : MonoBehaviour
     /// </summary>
     public bool canDash
     {
-        get { return _dashing.cooldownFrames < 0; }
+        get {
+            if (!_isDashEnabled) { Debug.Log("unable to dash"); }
+            if (_dashing.cooldownFrames >= 0) { Debug.Log("dash is cooling..."); }
+            return _waving.cooldownFrames < 0 && _isDashEnabled;
+        }
     }
 
     /// <summary>
@@ -672,8 +676,8 @@ public class PlatformerMotor2D : MonoBehaviour
             motorState = MotorState.NormalWave;
         }
 
-        if (OnFireSkill_WaveSword != null) {
-            OnFireSkill_WaveSword();
+        if (OnFireSkill != null) {
+            OnFireSkill(TackleContent.SWORD);
         }
     }
     
@@ -704,8 +708,8 @@ public class PlatformerMotor2D : MonoBehaviour
             motorState = MotorState.NormalThrow;
         }
 
-        if (OnFireSkill_ThrowDaggers != null) {
-            OnFireSkill_ThrowDaggers();
+        if (OnFireSkill != null) {
+            OnFireSkill(TackleContent.DAGGER);
         }
     }
     
@@ -816,8 +820,16 @@ public class PlatformerMotor2D : MonoBehaviour
     /// </summary>
     public void Dash()
     {
+        if (!canDash) {
+            return;
+        }
+
         _dashing.pressed = true;
         _dashing.dashWithDirection = false;
+
+        if (OnFireSkill != null) {
+            OnFireSkill(TackleContent.DASH_SHOE);
+        }
     }
 
     /// <summary>

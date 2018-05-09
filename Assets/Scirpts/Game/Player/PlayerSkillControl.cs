@@ -22,17 +22,20 @@ public class PlayerSkillControl : MonoBehaviour {
     }
 
     private void Awake() {
+        this.SingletonCheck();
         _motor = GetComponent<PlatformerMotor2D>();
     }
 
+    private void SingletonCheck() {
+        if (_instance == null) {
+            _instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        } else {
+            Destroy(gameObject);
+        }
+    }
+
     private void OnEnable() {
-        _motor.OnFireSkill_WaveSword += OnFireSkill_WaveSword;
-        _motor.OnFireSkill_ThrowDaggers += OnFireSkill_ThrowDagger;
-    }
 
-    private void OnFireSkill_WaveSword() {
-    }
-
-    private void OnFireSkill_ThrowDagger() {
     }
 }

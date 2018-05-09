@@ -3,25 +3,18 @@ using UnityEngine;
 using System;
 using UnityEngine.UI;
 
-public enum InventoryType {
-    SKILL = 0
-}
-
 public abstract class InventorySlot : MonoBehaviour {
     public int slotIndex;
 
-    protected InventoryType inventType;
+    protected TackleContent tackleType;
     protected Sprite slotSprite;
     protected bool isFilled;
     protected event Action OnFilledFunc;
 
     protected Image img_Main;
     protected Image img_Mask;
-    protected InventoryManager inventoryManager;
-
+    
     protected void Awake() {
-        inventoryManager = InventoryManager.GetInstance;
-
         if (transform.Find("icon") == null) {
             Debug.Log("There's no icon in slot's child nodes");
             return;
@@ -31,7 +24,7 @@ public abstract class InventorySlot : MonoBehaviour {
             Debug.Log("There's no mask in icon's child node");
             return;
         }
-        
+
         img_Main = transform.Find("icon").GetComponent<Image>();
         img_Mask = img_Main.transform.Find("mask").GetComponent<Image>();
     }
@@ -77,10 +70,9 @@ public abstract class InventorySlot : MonoBehaviour {
         }
     }
 
+    public TackleContent SlotTackleType { get { return this.tackleType; } set { this.tackleType = value; } }
 
-#region Abstract / Virtual funcs
-    public abstract InventoryType InventoryTypeValue { get; }
-
+    #region Abstract / Virtual funcs
     /// <summary>
     /// on slot used
     /// </summary>
@@ -90,7 +82,8 @@ public abstract class InventorySlot : MonoBehaviour {
     /// on filled callback
     /// </summary>
     protected virtual void OnFilledFuncImplement() {
-        inventoryManager.usedSlots.Add(this);
+        InventoryManager.GetInstance.GetUsedSlots.Add(this);
+        Debug.Log(string.Format("Add this slot: {0}, {1} to usedSlots list", this.slotIndex, this.tackleType));
     }
 #endregion
 }

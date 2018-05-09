@@ -10,8 +10,9 @@ namespace PC2D
         public const string JUMP = "Jump";
         public const string DASH = "Fire1";
 
-        public static KeyCode WAVE_SWORD = KeyCode.Alpha1;
-        public static KeyCode THROW_DAGGER = KeyCode.Alpha2;
+        public static KeyCode START_SLIDE;
+        public static KeyCode WAVE_SWORD;
+        public static KeyCode THROW_DAGGER;
     }
 
     public class Globals
