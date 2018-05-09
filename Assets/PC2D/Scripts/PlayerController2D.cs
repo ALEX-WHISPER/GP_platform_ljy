@@ -6,10 +6,30 @@ using UnityEngine;
 [RequireComponent(typeof(PlatformerMotor2D))]
 public class PlayerController2D : MonoBehaviour
 {
+    private static PlayerController2D _instance;
+
     private PlatformerMotor2D _motor;
     private bool _restored = true;
     private bool _enableOneWayPlatforms;
     private bool _oneWayPlatformsAreWalls;
+
+    public static PlayerController2D GetInstance {
+        get {
+            if (_instance == null) {
+                _instance = FindObjectOfType<PlayerController2D>();
+            }
+            return _instance;
+        }
+    }
+
+    private void Awake() {
+        if (_instance == null) {
+            _instance = this;
+            DontDestroyOnLoad(transform.root.gameObject);
+        } else {
+            Destroy(gameObject);
+        }
+    }
 
     // Use this for initialization
     void Start()
