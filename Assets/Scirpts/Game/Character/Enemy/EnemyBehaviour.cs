@@ -8,11 +8,17 @@ using UnityEditor;
 using System;
 using UnityEngine.AI;
 
+public enum EnemyType {
+    PATROL,
+    STATIC
+}
+
 [RequireComponent(typeof(CharacterController2D))]
 [RequireComponent(typeof(Collider2D))]
 public class EnemyBehaviour : MonoBehaviour {
-    static Collider2D[] s_ColliderCache = new Collider2D[16];
-
+    #region Public variables
+    public EnemyType enemyType = EnemyType.PATROL;
+    
     public event Action PlayerEnterDamageRange;
     public event Action PlayerOutofDamageRange;
 
@@ -23,6 +29,7 @@ public class EnemyBehaviour : MonoBehaviour {
     public float patrolSpeed;
     public float gravity = 10.0f;
     public float patrolingForwardDistance;
+    public float watchDuration;
 
     [Header("Scanning settings")]
     [Tooltip("The angle of the forward of the view cone. 0 is forward of the sprite, 90 is up, 180 behind etc.")]
@@ -35,15 +42,16 @@ public class EnemyBehaviour : MonoBehaviour {
     public float timeBeforeTargetLost = 3.0f;
 
     [Header("Melee Attack Data")]
-    //[EnemyMeleeRangeCheck]
     public float meleeRange = 3.0f;
-    //public Damager meleeDamager;
-    //public Damager contactDamager;
+    public Damager meleeDamager;
+    public Damager contactDamager;
     [Tooltip("if true, the enemy will jump/dash forward when it melee attack")]
     public bool attackDash;
     [Tooltip("The force used by the dash")]
     public Vector2 attackForce;
+    #endregion
 
+    #region Protected variables
     protected SpriteRenderer m_SpriteRenderer;
     protected CharacterController2D m_CharacterController2D;
     protected Collider2D m_Collider;
@@ -52,6 +60,7 @@ public class EnemyBehaviour : MonoBehaviour {
     //as we flip the sprite instead of rotating/scaling the object, this give the forward vector according to the sprite orientation
     protected Vector2 m_SpriteForward;
     protected Bounds m_LocalBounds;
+    protected Vector3 m_LocalDamagerPosition;
     protected ContactFilter2D m_Filter;
 
     protected Vector3 m_MoveVector;
@@ -61,9 +70,17 @@ public class EnemyBehaviour : MonoBehaviour {
     protected float m_FireTimer = 0.0f;
 
     protected bool m_Dead = false;
+    protected bool m_IsPatrolWatching = false;
 
     protected readonly int m_HashGroundedPara = Animator.StringToHash("Grounded");
+    protected readonly int m_HashHorizontalSpeed = Animator.StringToHash("speed");
+    #endregion
 
+    #region Internal variables
+    static Collider2D[] s_ColliderCache = new Collider2D[16];
+    #endregion
+
+    #region Life cycle
     private void Awake() {
         m_CharacterController2D = GetComponent<CharacterController2D>();
         m_Collider = GetComponent<Collider2D>();
@@ -85,6 +102,9 @@ public class EnemyBehaviour : MonoBehaviour {
         m_Filter.layerMask = m_CharacterController2D.groundedLayerMask;
         m_Filter.useLayerMask = true;
         m_Filter.useTriggers = false;
+
+        if (meleeDamager)
+            m_LocalDamagerPosition = meleeDamager.transform.localPosition;
     }
 
     private void OnEnable() {
@@ -108,8 +128,31 @@ public class EnemyBehaviour : MonoBehaviour {
         m_CharacterController2D.CheckCapsuleEndCollisions();
 
         UpdateTimers();
+
+        m_Animator.SetFloat(m_HashHorizontalSpeed, Mathf.Abs(m_MoveVector.x));
+    }
+    #endregion
+
+    #region Damage Block
+    public void StartAttack() {
+        meleeDamager.transform.localPosition = m_SpriteRenderer.flipX ?
+            Vector3.Scale(m_LocalDamagerPosition, new Vector3(-1, 1, 1)) :
+            m_LocalDamagerPosition;
+
+        meleeDamager.EnableDamage();
+        meleeDamager.gameObject.SetActive(true);
     }
 
+    public void OnEnemyGetHurt(Damager damager, Damageable damageable) {
+        
+    }
+
+    public void OnEnemyDie(Damager damager, Damageable damageable) {
+
+    }
+    #endregion
+
+    #region AI Block
     void UpdateTimers() {
         if (m_TimeSinceLastTargetView > 0.0f)
             m_TimeSinceLastTargetView -= Time.deltaTime;
@@ -120,7 +163,8 @@ public class EnemyBehaviour : MonoBehaviour {
 
     void UpdateTargetFindingState() {
         if (m_Target == null) {
-            Patrolling();
+            if (enemyType == EnemyType.PATROL)
+                Patrolling();
         } else {
             OrientToTarget();
             UpdateFacing();
@@ -130,14 +174,26 @@ public class EnemyBehaviour : MonoBehaviour {
 
     void Patrolling() {
         if (CheckForObstacle(patrolingForwardDistance)) {
-            Debug.Log("detect ground end");
-            this.SetHorizontalSpeed(-patrolSpeed);
-            this.UpdateFacing();
+            //  when the coroutine is running, do not enter it
+            //  because the Patrolling() function is called by UpdateTargetFindingState() which called from FixedUpdate()
+            //  so you do have to prevent it from calling this coroutine too many times
+            if (!m_IsPatrolWatching)
+                StartCoroutine(StopHangingToWatch());
         } else {
-            Debug.Log("on patrolling...");
-            this.SetHorizontalSpeed(patrolSpeed);
+            SetHorizontalSpeed(patrolSpeed);
+            ScanForPlayer();
         }
-        ScanForPlayer();
+    }
+
+    IEnumerator StopHangingToWatch() {
+        m_IsPatrolWatching = true;
+        SetHorizontalSpeed(0);
+        yield return new WaitForSeconds(watchDuration);
+
+        SetHorizontalSpeed(-patrolSpeed);
+        UpdateFacing();
+        m_IsPatrolWatching = false;
+        Debug.Log("update facing");
     }
 
     public void ScanForPlayer() {
@@ -251,21 +307,20 @@ public class EnemyBehaviour : MonoBehaviour {
         Vector2 targetPos = m_Target.position;
 
         while (dir.sqrMagnitude <= viewDistance * viewDistance) {
-            //Vector2 tarPos = Vector2.MoveTowards(transform.position, targetPos, speed * Time.deltaTime);
-            //transform.position = new Vector2(tarPos.x, transform.position.y);
+            if (dir.sqrMagnitude <= meleeRange) {
+                StartAttack();
+                break;
+            }
             SetHorizontalSpeed(chaseSpeed);
             dir = PlayerController2D.GetInstance.transform.position - transform.position;
             yield return null;
         }
     }
-
-    protected void LoseTarget() {
-
-    }
-
+    
     public void SetHorizontalSpeed(float horizontalSpeed) {
         m_MoveVector.x = horizontalSpeed * m_SpriteForward.x;
     }
+
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
         {
@@ -285,4 +340,5 @@ public class EnemyBehaviour : MonoBehaviour {
             Handles.DrawSolidDisc(transform.position, Vector3.back, meleeRange);
         }
 #endif
+    #endregion
 }

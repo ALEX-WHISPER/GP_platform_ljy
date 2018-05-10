@@ -6,6 +6,20 @@ TagManager:
   tags:
   - Dagger
   - Sword
+  - Slot
+  - Slots
+  - Canvas
+  - Hotbar
+  - EquipmentSystem
+  - Timer
+  - Tooltip
+  - MainInventory
+  - DraggingItem
+  - Panel
+  - CraftSystem
+  - ResultSlot
+  - Item
+  - ItemIcon
   layers:
   - Default
   - TransparentFX
@@ -20,7 +34,7 @@ TagManager:
   - Static Environment
   - MovingPlatform
   - Tackle
-  - 
+  - Enemy
   - 
   - 
   - 

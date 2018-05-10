@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerSkillControl : MonoBehaviour {
-    public GameObject m_Daggers;
+    public GameObject m_DaggersPrefab;
+
     public Transform m_EmitPoint;
 
     private PlatformerMotor2D _motor;
-    private static PlayerSkillControl _instance = null;
+    private SpriteRenderer playerSprite;
 
     private void Awake() {
         RefsInit();
@@ -19,12 +20,13 @@ public class PlayerSkillControl : MonoBehaviour {
 
     private void RefsInit() {
         _motor = GetComponent<PlatformerMotor2D>();
+        playerSprite = GetComponent<SpriteRenderer>();
     }
 
     private void OnPlayerFireSkill(TackleContent skillType) {
         if (skillType == TackleContent.DAGGER) {
             //  throw daggers
-            Instantiate(m_Daggers, Vector3.zero, Quaternion.identity, m_EmitPoint);
+            PoolManager.GetInstance.ReuseObject(m_DaggersPrefab, m_EmitPoint.position, Quaternion.identity);
         }
 
         if (skillType == TackleContent.SWORD) {
@@ -34,5 +36,9 @@ public class PlayerSkillControl : MonoBehaviour {
         if (skillType == TackleContent.DASH_SHOE) {
             //  dash
         }
+    }
+
+    public void PrepareObjectPool(GameObject prefab, int poolSize) {
+
     }
 }

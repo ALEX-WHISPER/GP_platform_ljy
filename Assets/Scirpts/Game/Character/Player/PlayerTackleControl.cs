@@ -7,6 +7,8 @@ using UnityEngine;
 public class PlayerTackleControl : MonoBehaviour {
     public int tackleLayerNum = 12;
     public List<TackleInfo> tackleList;
+
+    public event Action PickUpDaggerSkill;
     
     private PlatformerMotor2D _motor;
     
@@ -62,6 +64,12 @@ public class PlayerTackleControl : MonoBehaviour {
 
             slot_Skill.FillSlot();
 
+            if (tackle.tackleContent == TackleContent.DAGGER) {
+                if (PickUpDaggerSkill != null) {
+                    PickUpDaggerSkill();
+                }
+            }
+
             Debug.Log(string.Format("Put tackle: {0} into slot: {1}", tackle.tackleContent, slot_Skill.slotIndex));
         }
     }
@@ -90,7 +98,6 @@ public class PlayerTackleControl : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D collision) {
         //  not interact with tackle layer
         if (!collision.gameObject.layer.Equals(tackleLayerNum)) {
-            Debug.Log(string.Format("cur layer: {0}, tar layer: {1}", collision.gameObject.layer, tackleLayerNum));
             return;
         }
 

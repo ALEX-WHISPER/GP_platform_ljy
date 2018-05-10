@@ -22,6 +22,10 @@ public class PlayerController2D : MonoBehaviour
         }
     }
 
+    public bool IsFacingRight {
+        get { return transform.localScale.x > 0; }
+    }
+
     private void Awake() {
         if (_instance == null) {
             _instance = this;
