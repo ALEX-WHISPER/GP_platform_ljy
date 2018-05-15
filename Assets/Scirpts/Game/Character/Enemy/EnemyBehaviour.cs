@@ -18,7 +18,8 @@ public enum EnemyType {
 public class EnemyBehaviour : MonoBehaviour {
     #region Public variables
     public EnemyType enemyType = EnemyType.PATROL;
-    
+    public bool enablePatrolling = false;
+
     public event Action PlayerEnterDamageRange;
     public event Action PlayerOutofDamageRange;
 
@@ -71,9 +72,10 @@ public class EnemyBehaviour : MonoBehaviour {
 
     protected bool m_Dead = false;
     protected bool m_IsPatrolWatching = false;
-
-    protected readonly int m_HashGroundedPara = Animator.StringToHash("Grounded");
+    
     protected readonly int m_HashHorizontalSpeed = Animator.StringToHash("speed");
+    protected readonly int m_HashDead = Animator.StringToHash("die");
+    protected readonly int m_HashAttack = Animator.StringToHash("attack");
     #endregion
 
     #region Internal variables
@@ -103,8 +105,13 @@ public class EnemyBehaviour : MonoBehaviour {
         m_Filter.useLayerMask = true;
         m_Filter.useTriggers = false;
 
-        if (meleeDamager)
+        if (meleeDamager) {
+            meleeDamager.DisableDamage();
             m_LocalDamagerPosition = meleeDamager.transform.localPosition;
+        }
+        if (contactDamager) {
+            contactDamager.EnableDamage();
+        }
     }
 
     private void OnEnable() {
@@ -144,11 +151,13 @@ public class EnemyBehaviour : MonoBehaviour {
     }
 
     public void OnEnemyGetHurt(Damager damager, Damageable damageable) {
-        
+        bool faceRight = spriteFaceLeft ? m_SpriteRenderer.flipX : !m_SpriteRenderer.flipX;
+        Vector2 forceDir = faceRight ? Vector2.left : Vector2.right;
+        m_CharacterController2D.Rigidbody2D.AddForce(forceDir * 500f);
     }
 
     public void OnEnemyDie(Damager damager, Damageable damageable) {
-
+        
     }
     #endregion
 
@@ -163,7 +172,7 @@ public class EnemyBehaviour : MonoBehaviour {
 
     void UpdateTargetFindingState() {
         if (m_Target == null) {
-            if (enemyType == EnemyType.PATROL)
+            if (enemyType == EnemyType.PATROL && enablePatrolling)
                 Patrolling();
         } else {
             OrientToTarget();

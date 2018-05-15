@@ -20,6 +20,7 @@ TagManager:
   - ResultSlot
   - Item
   - ItemIcon
+  - Enemy
   layers:
   - Default
   - TransparentFX

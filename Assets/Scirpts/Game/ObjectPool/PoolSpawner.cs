@@ -31,13 +31,10 @@ public class PoolSpawner : MonoBehaviour {
     private void OnEnable() {
         GameObject.FindWithTag("Player").GetComponent<PlayerTackleControl>().PickUpDaggerSkill += CreateDaggersPool;
     }
-
-    private void OnDisable() {
-        GameObject.FindWithTag("Player").GetComponent<PlayerTackleControl>().PickUpDaggerSkill -= CreateDaggersPool;
-    }
-
+    
     public void CreateDaggersPool() {
         Debug.Log("Create Daggers Pool");
         PoolManager.GetInstance.CreatePool(daggersPoolInfo.prefab, daggersPoolInfo.poolSize);
+        GameObject.FindWithTag("Player").GetComponent<PlayerTackleControl>().PickUpDaggerSkill -= CreateDaggersPool;
     }
 }
