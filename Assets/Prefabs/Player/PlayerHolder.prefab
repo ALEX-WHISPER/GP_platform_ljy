@@ -110,7 +110,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1739307226788638}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -17.09, y: -2.18, z: 0}
+  m_LocalPosition: {x: -7.298, y: 0, z: 0}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_Children:
   - {fileID: 4641927741296310}
@@ -287,12 +287,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4a8b24f87681454c835bfb018d18b5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_HealthSlotArray:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   m_HurtTwinkleDuration: 2.5
 --- !u!114 &114223241002149836
 MonoBehaviour:
@@ -388,11 +382,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tackleLayerNum: 12
-  tackleList:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!114 &114377420020281328
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -546,7 +535,7 @@ MonoBehaviour:
   additionalRaycastsPerSide: 0
   groundSpeed: 6
   timeToGroundSpeed: 0.1
-  groundStopDistance: 0.333
+  groundStopDistance: 0.1
   airSpeed: 5
   changeDirectionInAir: 1
   timeToAirSpeed: 0.2
