@@ -21,6 +21,7 @@ TagManager:
   - Item
   - ItemIcon
   - Enemy
+  - Entry
   layers:
   - Default
   - TransparentFX
@@ -36,7 +37,7 @@ TagManager:
   - MovingPlatform
   - Tackle
   - Enemy
-  - 
+  - Boundary
   - 
   - 
   - 

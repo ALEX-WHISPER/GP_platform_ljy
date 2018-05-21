@@ -225,6 +225,10 @@ public class EnemyBehaviour : MonoBehaviour {
     }
 
     public void ScanForPlayer() {
+        if (PlayerController2D.GetInstance == null) {
+            return;
+        }
+
         Vector3 dir = PlayerController2D.GetInstance.transform.position - transform.position;
 
         if (dir.sqrMagnitude > viewDistance * viewDistance) {
@@ -280,6 +284,7 @@ public class EnemyBehaviour : MonoBehaviour {
         }
 
         Vector3 castingPosition = (Vector2)(transform.position + m_LocalBounds.center) + m_SpriteForward * m_LocalBounds.extents.x;
+
         Debug.DrawLine(castingPosition, castingPosition + Vector3.down * (m_LocalBounds.extents.y + 0.2f));
 
         if (!Physics2D.CircleCast(castingPosition, 0.1f, Vector2.down, m_LocalBounds.extents.y + 0.2f, m_CharacterController2D.groundedLayerMask.value)) {

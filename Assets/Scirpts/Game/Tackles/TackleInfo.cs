@@ -44,7 +44,7 @@ public class TackleInfo: MonoBehaviour {
     }
 
     private void OnEnable() {
-        this.onPickUp += OnTackledPickedUp;
+        this.onPickUp += OnTacklePickedUp;
 
         if (m_Player != null) {
             this.onPickUp += m_Player.GetComponent<PlayerTackleControl>().OnTacklePickedUp;
@@ -52,14 +52,14 @@ public class TackleInfo: MonoBehaviour {
     }
 
     private void OnDisable() {
-        this.onPickUp -= OnTackledPickedUp;
+        this.onPickUp -= OnTacklePickedUp;
 
         if (m_Player != null) {
             this.onPickUp -= m_Player.GetComponent<PlayerTackleControl>().OnTacklePickedUp;
         }
     }
 
-    private void OnTackledPickedUp(TackleInfo tackle) {
+    private void OnTacklePickedUp(TackleInfo tackle) {
         Debug.Log(string.Format("onTacklePickedUp: {0}", tackleContent));
 
         //  disapper

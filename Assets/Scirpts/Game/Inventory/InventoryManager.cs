@@ -17,7 +17,6 @@ public class InventoryManager : MonoBehaviour {
                 if (_instance == null) {
                     GameObject go = new GameObject("InventoryManager");
                     go.AddComponent<InventoryManager>();
-                    DontDestroyOnLoad(go);
                 }
             }
             return _instance;

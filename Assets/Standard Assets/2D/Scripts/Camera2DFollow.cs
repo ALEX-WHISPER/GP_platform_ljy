@@ -18,9 +18,23 @@ namespace UnityStandardAssets._2D
         private Vector3 m_CurrentVelocity;
         private Vector3 m_LookAheadPos;
 
+        private void Awake() {
+            if (target == null) {
+                if(GameObject.FindWithTag("Player") == null) {
+                    Debug.LogError("Player is missing!");
+                    return;
+                }
+                target = GameObject.FindWithTag("Player").transform;
+            }
+        }
+
         // Use this for initialization
         private void Start()
         {
+            if (target == null) {
+                return;
+            }
+
             m_LastTargetPosition = target.position;
             m_OffsetZ = (transform.position - target.position).z;
             transform.parent = null;
@@ -30,6 +44,10 @@ namespace UnityStandardAssets._2D
         // Update is called once per frame
         private void Update()
         {
+            if (target == null) {
+                return;
+            }
+
             FollowTarget();
             //PositionClamp();
         }
