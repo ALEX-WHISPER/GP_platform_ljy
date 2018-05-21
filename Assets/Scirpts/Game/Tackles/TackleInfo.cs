@@ -4,7 +4,8 @@ using System;
 public enum TackleContent {
     SWORD,
     DAGGER,
-    DASH_SHOE
+    DASH_SHOE,
+    HEALTH_POINT,
 }
 
 public enum TackleProperty {
@@ -25,6 +26,8 @@ public class TackleInfo: MonoBehaviour {
     [HideInInspector]
     public event Action<TackleInfo> onPickUp;   //  callback on picked up
 
+    private GameObject m_Player;
+
     public void GetPickedUp() {
         isPicked = true;
 
@@ -33,12 +36,27 @@ public class TackleInfo: MonoBehaviour {
         }
     }
 
+    private void Awake() {
+        m_Player = GameObject.FindWithTag("Player");
+        if (m_Player == null) {
+            Debug.Log("No Player Founded");
+        }
+    }
+
     private void OnEnable() {
         this.onPickUp += OnTackledPickedUp;
+
+        if (m_Player != null) {
+            this.onPickUp += m_Player.GetComponent<PlayerTackleControl>().OnTacklePickedUp;
+        }
     }
 
     private void OnDisable() {
         this.onPickUp -= OnTackledPickedUp;
+
+        if (m_Player != null) {
+            this.onPickUp -= m_Player.GetComponent<PlayerTackleControl>().OnTacklePickedUp;
+        }
     }
 
     private void OnTackledPickedUp(TackleInfo tackle) {

@@ -116,10 +116,12 @@ public class EnemyBehaviour : MonoBehaviour {
 
     private void OnEnable() {
         PlayerEnterDamageRange += MoveTowardsTarget;
+        PlayerOutofDamageRange += EndAttack;
     }
 
     private void OnDisable() {
         PlayerEnterDamageRange -= MoveTowardsTarget;
+        PlayerOutofDamageRange -= EndAttack;
     }
 
     void FixedUpdate() {
@@ -142,12 +144,25 @@ public class EnemyBehaviour : MonoBehaviour {
 
     #region Damage Block
     public void StartAttack() {
-        meleeDamager.transform.localPosition = m_SpriteRenderer.flipX ?
-            Vector3.Scale(m_LocalDamagerPosition, new Vector3(-1, 1, 1)) :
-            m_LocalDamagerPosition;
+        if (m_SpriteRenderer.flipX) {
+            meleeDamager.transform.localPosition = Vector3.Scale(m_LocalDamagerPosition, new Vector3(-2, 1, 1));
+        } else {
+            meleeDamager.transform.localPosition = m_LocalDamagerPosition;
+        }
 
         meleeDamager.EnableDamage();
         meleeDamager.gameObject.SetActive(true);
+
+        m_Animator.SetBool(m_HashAttack, true);
+    }
+
+    public void EndAttack() {
+        if (meleeDamager != null) {
+            meleeDamager.gameObject.SetActive(false);
+            meleeDamager.DisableDamage();
+
+            m_Animator.SetBool(m_HashAttack, false);
+        }
     }
 
     public void OnEnemyGetHurt(Damager damager, Damageable damageable) {
@@ -157,7 +172,8 @@ public class EnemyBehaviour : MonoBehaviour {
     }
 
     public void OnEnemyDie(Damager damager, Damageable damageable) {
-        
+        m_Animator.SetTrigger(m_HashDead);
+        m_Dead = true;
     }
     #endregion
 
@@ -172,8 +188,11 @@ public class EnemyBehaviour : MonoBehaviour {
 
     void UpdateTargetFindingState() {
         if (m_Target == null) {
-            if (enemyType == EnemyType.PATROL && enablePatrolling)
+            if (enemyType == EnemyType.PATROL && enablePatrolling) {
                 Patrolling();
+            } else {
+                ScanForPlayer();
+            }
         } else {
             OrientToTarget();
             UpdateFacing();
@@ -209,6 +228,9 @@ public class EnemyBehaviour : MonoBehaviour {
         Vector3 dir = PlayerController2D.GetInstance.transform.position - transform.position;
 
         if (dir.sqrMagnitude > viewDistance * viewDistance) {
+            if (PlayerOutofDamageRange != null) {
+                PlayerOutofDamageRange();
+            }
             return;
         }
 
@@ -316,6 +338,8 @@ public class EnemyBehaviour : MonoBehaviour {
         Vector2 targetPos = m_Target.position;
 
         while (dir.sqrMagnitude <= viewDistance * viewDistance) {
+
+            //  when the player is close enough, start to attack
             if (dir.sqrMagnitude <= meleeRange) {
                 StartAttack();
                 break;
@@ -324,8 +348,9 @@ public class EnemyBehaviour : MonoBehaviour {
             dir = PlayerController2D.GetInstance.transform.position - transform.position;
             yield return null;
         }
+        SetHorizontalSpeed(0);
     }
-    
+
     public void SetHorizontalSpeed(float horizontalSpeed) {
         m_MoveVector.x = horizontalSpeed * m_SpriteForward.x;
     }

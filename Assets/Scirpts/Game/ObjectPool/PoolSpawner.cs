@@ -28,6 +28,10 @@ public class PoolSpawner : MonoBehaviour {
         }
     }
 
+    private void Start() {
+        DontDestroyOnLoad(gameObject);
+    }
+
     private void OnEnable() {
         GameObject.FindWithTag("Player").GetComponent<PlayerTackleControl>().PickUpDaggerSkill += CreateDaggersPool;
     }

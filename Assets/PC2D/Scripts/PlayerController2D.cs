@@ -7,11 +7,12 @@ using UnityEngine;
 public class PlayerController2D : MonoBehaviour
 {
     private static PlayerController2D _instance;
-
+    
     private PlatformerMotor2D _motor;
     private bool _restored = true;
     private bool _enableOneWayPlatforms;
     private bool _oneWayPlatformsAreWalls;
+    private bool _enableMove;
 
     public static PlayerController2D GetInstance {
         get {
@@ -26,6 +27,18 @@ public class PlayerController2D : MonoBehaviour
         get { return transform.localScale.x > 0; }
     }
 
+    public void EnableMovement() {
+        _enableMove = true;
+    }
+
+    public void DisableMovement() {
+        _enableMove = false;
+    }
+
+    public void ResetPosToOrigin() {
+        transform.localPosition = Vector3.one;
+    }
+
     private void Awake() {
         if (_instance == null) {
             _instance = this;
@@ -34,14 +47,13 @@ public class PlayerController2D : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
-    // Use this for initialization
+    
     void Start()
     {
         _motor = GetComponent<PlatformerMotor2D>();
+        EnableMovement();
     }
-
-    // before enter en freedom state for ladders
+    
     void FreedomStateSave(PlatformerMotor2D motor)
     {
         if (!_restored) // do not enter twice
@@ -61,10 +73,13 @@ public class PlayerController2D : MonoBehaviour
         _motor.enableOneWayPlatforms = _enableOneWayPlatforms;
         _motor.oneWayPlatformsAreWalls = _oneWayPlatformsAreWalls;
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
+        if (!_enableMove) {
+            return;
+        }
+
         // use last state to restore some ladder specific values
         if (_motor.motorState != PlatformerMotor2D.MotorState.FreedomState)
         {

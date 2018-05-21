@@ -6,8 +6,6 @@ using UnityEngine;
 [RequireComponent(typeof(PlatformerMotor2D), typeof(Rigidbody2D))]
 public class PlayerTackleControl : MonoBehaviour {
     public int tackleLayerNum = 12;
-    public List<TackleInfo> tackleList;
-
     public event Action PickUpDaggerSkill;
     
     private PlatformerMotor2D _motor;
@@ -17,33 +15,15 @@ public class PlayerTackleControl : MonoBehaviour {
     }
 
     private void OnEnable() {
-        PickedUpEventsReg();    //  tackles got picked up
         FireSkillEventsReg();   //  skills got fired
     }
 
     private void OnDisable() {
-        PickedUpEventsDeReg();
         FireSkillEventsDeReg();
     }
-
-    #region Pick up events
-    private void PickedUpEventsReg() {
-        for (int i = 0; i < tackleList.Count; i++) {
-            int index = i;
-            tackleList[index].onPickUp += OnTacklePickedUp;
-        }
-    }
-
-    private void PickedUpEventsDeReg() {
-        for (int i = 0; i < tackleList.Count; i++) {
-            int index = i;
-            tackleList[index].onPickUp -= OnTacklePickedUp;
-        }
-    }
-    #endregion
-
+    
     #region On picked up tackle: put it in a slot
-    private void OnTacklePickedUp(TackleInfo tackle) {
+    public void OnTacklePickedUp(TackleInfo tackle) {
         //  pick up skill tackle
         if (tackle.tackleProperty == TackleProperty.SKILL) {
             SkillSlot slot_Skill = (SkillSlot)InventoryManager.GetInstance.GetAvailableSlot();
@@ -71,6 +51,12 @@ public class PlayerTackleControl : MonoBehaviour {
             }
 
             Debug.Log(string.Format("Put tackle: {0} into slot: {1}", tackle.tackleContent, slot_Skill.slotIndex));
+        } 
+        //  pick up bonus tackle
+        else if (tackle.tackleProperty == TackleProperty.BONUS) {
+            if (tackle.tackleContent == TackleContent.HEALTH_POINT) {
+                GetComponent<Damageable>().GainHealth(1);
+            }
         }
     }
     #endregion
