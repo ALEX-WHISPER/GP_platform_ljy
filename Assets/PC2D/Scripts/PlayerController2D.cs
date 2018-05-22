@@ -77,7 +77,12 @@ public class PlayerController2D : MonoBehaviour
     void Update()
     {
         if (!_enableMove) {
+            if (!_motor.frozen)
+                _motor.frozen = true;
             return;
+        } else {
+            if (_motor.frozen)
+                _motor.frozen = false;
         }
 
         // use last state to restore some ladder specific values

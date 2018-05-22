@@ -31,6 +31,7 @@ public class EnemyBehaviour : MonoBehaviour {
     public float gravity = 10.0f;
     public float patrolingForwardDistance;
     public float watchDuration;
+    public float stopDistance = 0.2f;
 
     [Header("Scanning settings")]
     [Tooltip("The angle of the forward of the view cone. 0 is forward of the sprite, 90 is up, 180 behind etc.")]
@@ -345,7 +346,7 @@ public class EnemyBehaviour : MonoBehaviour {
         while (dir.sqrMagnitude <= viewDistance * viewDistance) {
 
             //  when the player is close enough, start to attack
-            if (dir.sqrMagnitude <= meleeRange) {
+            if (dir.sqrMagnitude <= stopDistance) {
                 StartAttack();
                 break;
             }
