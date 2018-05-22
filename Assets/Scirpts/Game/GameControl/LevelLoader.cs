@@ -10,6 +10,10 @@ public class LevelLoader : MonoBehaviour {
     public string loadedHintText = "Hit 'SPACE' to continue...";
 
     public void ResetUI() {
+        if (loadingPanel == null) {
+            return;
+        }
+
         loadingPanel.SetActive(false);
         loadingBar.transform.Find("LoadingProgText").GetComponent<Text>().text = 0 + "%";
         loadingBar.value = 0f;
@@ -31,7 +35,7 @@ public class LevelLoader : MonoBehaviour {
 
     //  load the next level
     public void LoadNextLevelOnDelay(float delay) {
-        Invoke("LoadNextLevelOnDelay", delay);
+        Invoke("LoadNextLevel", delay);
     }
 
     //  load level with activate and deactivate ui elements
@@ -62,7 +66,7 @@ public class LevelLoader : MonoBehaviour {
         StartCoroutine(LoadLevelAsync(sceneIndex));
     }
 
-    private void LoadNextLevelOnDelay() {
+    private void LoadNextLevel() {
         if (loadingPanel != null) {
             loadingPanel.SetActive(true);
         }
@@ -71,6 +75,10 @@ public class LevelLoader : MonoBehaviour {
     }
 
     IEnumerator LoadLevelAsync(int sceneIndex) {
+        if (sceneIndex >= SceneManager.sceneCountInBuildSettings - 1) {
+            sceneIndex = 0;
+        }
+
         yield return new WaitForSeconds(0.2f);
 
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneIndex); //  异步加载目标场景
