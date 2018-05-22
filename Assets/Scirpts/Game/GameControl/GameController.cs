@@ -9,12 +9,29 @@ public class GameController : MonoBehaviour {
 
     public GameObject gameOverPanel;
 
+    private static GameController _instance;
     private LevelLoader levelLoader;
     private PlayerHealth m_PlayerHealth;
     private Transform m_PlayerHolder;
     private bool m_IsGameOver;
 
+    public static GameController GetInstance {
+        get {
+            if (_instance == null) {
+                _instance = FindObjectOfType<GameController>();
+            }
+            return _instance;
+        }
+    }
+
     private void Awake() {
+        if (_instance == null) {
+            _instance = this;
+            DontDestroyOnLoad(gameObject);
+        } else {
+            Destroy(gameObject);
+        }
+
         levelLoader = GetComponent<LevelLoader>();
 
         if (GameObject.Find("PlayerHolder") == null) {
@@ -44,8 +61,20 @@ public class GameController : MonoBehaviour {
         }
 
         if (Input.GetKeyDown(KeyCode.Space)) {
-            levelLoader.LoadNextLevel(0);
+            levelLoader.LoadLevelWithUISettings(0);
         }
+    }
+
+    public void ResetUI() {
+        gameOverPanel.SetActive(false);
+    }
+
+    public void ResetGame() {
+        gameOverPanel.SetActive(false);
+        m_IsGameOver = false;
+        
+        m_PlayerHolder.GetComponentInChildren<Damageable>().SetInitialHealth();
+        m_PlayerHealth.GetComponentInChildren<PlayerHealth>().PlayerReborn();
     }
 
     public void GameOver() {
@@ -67,14 +96,30 @@ public class GameController : MonoBehaviour {
 
     }
 
+    public void OnPassedLevel() {
+        levelLoader.LoadNextLevelOnDelay(0.5f);
+    }
+
     private void OnSceneChanged(Scene from, Scene to) {
+        ResetUI();
+
         Debug.Log(string.Format("From scene: {0} to scene: {1}", from.name, to.name));
         levelLoader.ResetUI();
 
-        if (to.name == "level1") {
-            m_PlayerHolder.localPosition = this.playerInitPos_Level1;
-        } else if (to.name == "level2") {
-            m_PlayerHolder.localPosition = this.playerInitPos_Level2;
+        if (to.name == "_Start") {
+            //  disable player movement
+            PlayerController2D.GetInstance.DisableMovement();
+            PlayerController2D.GetInstance.transform.GetComponent<PlatformerMotor2D>().frozen = true;
+
+        } else {
+            PlayerController2D.GetInstance.EnableMovement();
+            PlayerController2D.GetInstance.transform.GetComponent<PlatformerMotor2D>().frozen = false;
+
+            if (to.name == "level1") {
+                m_PlayerHolder.localPosition = this.playerInitPos_Level1;
+            } else if (to.name == "level2") {
+                m_PlayerHolder.localPosition = this.playerInitPos_Level2;
+            }
         }
     }
 }

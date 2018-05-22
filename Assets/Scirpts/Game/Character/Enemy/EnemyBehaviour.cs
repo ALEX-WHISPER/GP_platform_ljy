@@ -144,6 +144,11 @@ public class EnemyBehaviour : MonoBehaviour {
     #endregion
 
     #region Damage Block
+    public void DestroySelf() {
+        EndAttack();
+        gameObject.SetActive(false);
+    }
+
     public void StartAttack() {
         if (m_SpriteRenderer.flipX) {
             meleeDamager.transform.localPosition = Vector3.Scale(m_LocalDamagerPosition, new Vector3(-2, 1, 1));

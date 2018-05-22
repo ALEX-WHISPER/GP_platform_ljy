@@ -15,17 +15,27 @@ public class LevelLoader : MonoBehaviour {
         loadingBar.value = 0f;
     }
 
+    private void Start() {
+        ResetUI();
+    }
+
     private void Update() {
         if (Input.GetKey(KeyCode.LeftShift)) {
             Debug.Log("get key: LeftShift");
             if (Input.GetKeyDown(KeyCode.RightArrow)) {
                 Debug.Log("get key: RightArrow");
-                LoadNextLevel(SceneManager.GetActiveScene().buildIndex + 1);
+                LoadLevelWithUISettings(SceneManager.GetActiveScene().buildIndex + 1);
             }
         }
     }
 
-    public void LoadNextLevel(int sceneIndex) {
+    //  load the next level
+    public void LoadNextLevelOnDelay(float delay) {
+        Invoke("LoadNextLevelOnDelay", delay);
+    }
+
+    //  load level with activate and deactivate ui elements
+    public void LoadLevelWithUISettings(int sceneIndex) {
         if (loadingPanel != null) {
             loadingPanel.SetActive(true);
         }
@@ -34,6 +44,30 @@ public class LevelLoader : MonoBehaviour {
         }
         
         StartCoroutine(LoadLevelAsync(sceneIndex));
+    }
+
+    //  load level0
+    public void LoadLevelFromBeginning() {
+        if (loadingPanel != null) {
+            loadingPanel.SetActive(true);
+        }
+        StartCoroutine(LoadLevelAsync(1));
+    }
+
+    //  load level based on para
+    public void LoadLevel(int sceneIndex) {
+        if (loadingPanel != null) {
+            loadingPanel.SetActive(true);
+        }
+        StartCoroutine(LoadLevelAsync(sceneIndex));
+    }
+
+    private void LoadNextLevelOnDelay() {
+        if (loadingPanel != null) {
+            loadingPanel.SetActive(true);
+        }
+
+        StartCoroutine(LoadLevelAsync(SceneManager.GetActiveScene().buildIndex + 1));
     }
 
     IEnumerator LoadLevelAsync(int sceneIndex) {

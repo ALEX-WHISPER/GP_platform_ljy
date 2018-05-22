@@ -88,7 +88,7 @@ Transform:
   m_GameObject: {fileID: 1116705822584764}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.39333314, y: -1.65, z: 0}
-  m_LocalScale: {x: 0.06666666, y: 0.06666666, z: 0.15089}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_Children:
   - {fileID: 4673823857385172}
   - {fileID: 4300826543100396}
@@ -235,6 +235,7 @@ MonoBehaviour:
   gravity: 10
   patrolingForwardDistance: 1
   watchDuration: 2
+  stopDistance: 0.2
   viewDirection: 0
   viewFov: 88
   viewDistance: 2

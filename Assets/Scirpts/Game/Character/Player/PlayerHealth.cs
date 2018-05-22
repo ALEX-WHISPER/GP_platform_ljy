@@ -9,13 +9,23 @@ public class PlayerHealth : MonoBehaviour {
     private PlayerController2D m_PlayerControl2D;
     private Damageable m_PlayerDamageable;
 
+    protected readonly int m_HashOnGround = Animator.StringToHash("ground");
     protected readonly int m_HashHurt = Animator.StringToHash("hurt");
     protected readonly int m_HashDead = Animator.StringToHash("dead");
+    protected readonly int m_HashReborn = Animator.StringToHash("reborn");
 
     private void Awake() {
         m_Animator = GetComponent<Animator>();
         m_PlayerControl2D = GetComponent<PlayerController2D>();
         m_PlayerDamageable = GetComponent<Damageable>();
+    }
+
+    public void OnPlayerGetHurt() {
+        StartCoroutine(PlayerGetHurtEffect());
+    }
+
+    public void PlayerReborn() {
+        m_Animator.SetTrigger(m_HashReborn);
     }
 
     public void OnPlayerGetHurt(Damager damager, Damageable damageable) {
@@ -24,7 +34,7 @@ public class PlayerHealth : MonoBehaviour {
 
     public void OnPlayerDie(Damager damager, Damageable damageable) {
         Debug.Log("Player dead");
-        m_Animator.SetBool(m_HashDead, true);
+        m_Animator.SetTrigger(m_HashDead);
     }
 
     IEnumerator PlayerGetHurtEffect() {

@@ -33,14 +33,7 @@ public class Damageable : MonoBehaviour {
     }
 
     private void OnEnable() {
-        //  set initial health point
-        m_CurrentHealth = startingHealth;
-
-        //  call back on health set
-        OnHealthSet.Invoke(this);
-
-        //  disable invulnerability
-        DisableInvulnerability();
+        SetInitialHealth();
     }
 
     private void Update() {
@@ -50,6 +43,19 @@ public class Damageable : MonoBehaviour {
                 m_Invulnerable = false;
             }
         }
+    }
+
+    public void SetInitialHealth() {
+        //  set initial health point
+        m_CurrentHealth = startingHealth;
+
+        //  call back on health set
+        OnHealthSet.Invoke(this);
+
+        //  disable invulnerability
+        DisableInvulnerability();
+
+        Debug.Log("onHealthSet");
     }
 
     public void DisableInvulnerability() {
