@@ -284,15 +284,20 @@ public class EnemyBehaviour : MonoBehaviour {
     }
 
     public bool CheckForObstacle(float forwardDistance) {
-        //we circle cast with a size sligly small than the collider height. That avoid to collide with very small bump on the ground
+        //  we circle cast with a size sligly small than the collider height. That avoid to collide with very small bump on the ground
+
+        //  if hit obstacles
+        //  forwardDistance: detecting distance
         if (Physics2D.CircleCast(m_Collider.bounds.center, m_Collider.bounds.extents.y - 0.2f, m_SpriteForward, forwardDistance, m_Filter.layerMask.value)) {
             return true;
         }
 
-        Vector3 castingPosition = (Vector2)(transform.position + m_LocalBounds.center) + m_SpriteForward * m_LocalBounds.extents.x;
+        //  origin point of ground edge detecting
+        Vector3 castingPosition = (Vector2)(transform.position) + m_SpriteForward * m_LocalBounds.extents.x * 0.5f;
 
         Debug.DrawLine(castingPosition, castingPosition + Vector3.down * (m_LocalBounds.extents.y + 0.2f));
 
+        //  if about to hit nothing of Ground layer, which means at the edge of ground
         if (!Physics2D.CircleCast(castingPosition, 0.1f, Vector2.down, m_LocalBounds.extents.y + 0.2f, m_CharacterController2D.groundedLayerMask.value)) {
             return true;
         }
@@ -369,7 +374,7 @@ public class EnemyBehaviour : MonoBehaviour {
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
         {
-            //draw the cone of view
+            //  draw the cone of view
             Vector3 forward = spriteFaceLeft ? Vector2.left : Vector2.right;
             forward = Quaternion.Euler(0, 0, spriteFaceLeft ? -viewDirection : viewDirection) * forward;
 

@@ -1281,6 +1281,16 @@ Prefab:
       propertyPath: patrolSpeed
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 114404397136552108, guid: 385b4849409ddc648ab7e707cf8765af,
+        type: 2}
+      propertyPath: patrolingForwardDistance
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114404397136552108, guid: 385b4849409ddc648ab7e707cf8765af,
+        type: 2}
+      propertyPath: viewDirection
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 385b4849409ddc648ab7e707cf8765af, type: 2}
   m_IsPrefabParent: 0
@@ -4704,6 +4714,11 @@ Prefab:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114474870581976364, guid: e8374f2a5e7b1a84795f217a37dce679,
+        type: 2}
+      propertyPath: patrolingForwardDistance
+      value: 0.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e8374f2a5e7b1a84795f217a37dce679, type: 2}
   m_IsPrefabParent: 0
@@ -5220,6 +5235,11 @@ Prefab:
         type: 2}
       propertyPath: patrolSpeed
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 114755650554330716, guid: 7fd80dadcd15b90429020560420e7d4e,
+        type: 2}
+      propertyPath: patrolingForwardDistance
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7fd80dadcd15b90429020560420e7d4e, type: 2}
