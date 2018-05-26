@@ -20,6 +20,12 @@ public class PlayerHealth : MonoBehaviour {
         m_PlayerDamageable = GetComponent<Damageable>();
     }
 
+    private void Update() {
+        if (Input.GetKeyDown(KeyCode.Keypad0)) {
+            OnPlayerDie();
+        }
+    }
+
     public void OnPlayerGetHurt() {
         StartCoroutine(PlayerGetHurtEffect());
     }
@@ -34,7 +40,17 @@ public class PlayerHealth : MonoBehaviour {
 
     public void OnPlayerDie(Damager damager, Damageable damageable) {
         Debug.Log("Player dead");
+        GetComponent<Damageable>().SetHealth(0);
         m_Animator.SetTrigger(m_HashDead);
+
+        GameController.GetInstance.GameOver();
+    }
+
+    private void OnPlayerDie() {
+        GetComponent<Damageable>().SetHealth(0);
+        m_Animator.SetTrigger(m_HashDead);
+
+        GameController.GetInstance.GameOver();
     }
 
     IEnumerator PlayerGetHurtEffect() {

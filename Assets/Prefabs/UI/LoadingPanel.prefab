@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 224928748726266336}
   - component: {fileID: 222237259233892190}
   - component: {fileID: 114138152465445656}
-  m_Layer: 5
+  m_Layer: 16
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 224422893562205114}
   - component: {fileID: 222081404520063044}
   - component: {fileID: 114385793826631846}
-  m_Layer: 5
+  m_Layer: 16
   m_Name: LoadingPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -55,7 +55,7 @@ GameObject:
   - component: {fileID: 224161574099202316}
   - component: {fileID: 222256326782060042}
   - component: {fileID: 114598009272444902}
-  m_Layer: 5
+  m_Layer: 16
   m_Name: LoadingProgText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -71,7 +71,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224774495743985374}
   - component: {fileID: 114501881323694534}
-  m_Layer: 5
+  m_Layer: 16
   m_Name: LoadingBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 224403969092066118}
   - component: {fileID: 222653343183344140}
   - component: {fileID: 114115119715966288}
-  m_Layer: 5
+  m_Layer: 16
   m_Name: Handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,7 +105,7 @@ GameObject:
   - component: {fileID: 224208166948729230}
   - component: {fileID: 222377341516286272}
   - component: {fileID: 114730958549535210}
-  m_Layer: 5
+  m_Layer: 16
   m_Name: LoadingHintText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -120,7 +120,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224449267965463542}
-  m_Layer: 5
+  m_Layer: 16
   m_Name: Handle Slide Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -135,7 +135,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224067345520683130}
-  m_Layer: 5
+  m_Layer: 16
   m_Name: Fill Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -153,7 +153,7 @@ GameObject:
   - component: {fileID: 222753659571768416}
   - component: {fileID: 114469727066803036}
   - component: {fileID: 114089892491596836}
-  m_Layer: 5
+  m_Layer: 16
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -170,7 +170,7 @@ GameObject:
   - component: {fileID: 224511126610047774}
   - component: {fileID: 222269089390919440}
   - component: {fileID: 114600871999850434}
-  m_Layer: 5
+  m_Layer: 16
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -230,7 +230,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.30789426, g: 0.32660443, b: 0.3490566, a: 1}
+  m_Color: {r: 0.8509804, g: 0, b: 0, a: 0.48235294}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -284,7 +284,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.8490566, g: 0, b: 0, a: 0.6}
+  m_Color: {r: 0.1792453, g: 0.16825384, b: 0.16825384, a: 0.6}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -498,8 +498,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.25}
   m_AnchorMax: {x: 1, y: 0.75}
-  m_AnchoredPosition: {x: 2.300003, y: -1.0900002}
-  m_SizeDelta: {x: 4.06, y: 35.27}
+  m_AnchoredPosition: {x: 2.64, y: -2.1}
+  m_SizeDelta: {x: 4.74, y: 33.54}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224161574099202316
 RectTransform:
@@ -627,8 +627,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.25}
   m_AnchorMax: {x: 1, y: 0.75}
-  m_AnchoredPosition: {x: 2.75, y: -1.22}
-  m_SizeDelta: {x: 8.87, y: 12.02}
+  m_AnchoredPosition: {x: 5.73, y: -1.22}
+  m_SizeDelta: {x: 19.87, y: 12.02}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224774495743985374
 RectTransform:
@@ -650,8 +650,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 12}
-  m_SizeDelta: {x: 320, y: 40}
+  m_AnchoredPosition: {x: -6.4, y: 12}
+  m_SizeDelta: {x: 307.7, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224928748726266336
 RectTransform:

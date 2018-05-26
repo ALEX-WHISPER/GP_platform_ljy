@@ -172,14 +172,19 @@ public class EnemyBehaviour : MonoBehaviour {
     }
 
     public void OnEnemyGetHurt(Damager damager, Damageable damageable) {
-        bool faceRight = spriteFaceLeft ? m_SpriteRenderer.flipX : !m_SpriteRenderer.flipX;
-        Vector2 forceDir = faceRight ? Vector2.left : Vector2.right;
+        Vector2 forceDir =
+            Mathf.Sign(damager.transform.position.x - damageable.transform.position.x) > 0 ? Vector2.left : Vector2.right;
+        
         m_CharacterController2D.Rigidbody2D.AddForce(forceDir * 500f);
     }
 
     public void OnEnemyDie(Damager damager, Damageable damageable) {
         m_Animator.SetTrigger(m_HashDead);
         m_Dead = true;
+        meleeDamager.DisableDamage();
+        contactDamager.DisableDamage();
+        m_Collider.isTrigger = true;
+        GetComponent<Rigidbody2D>().isKinematic = true;
     }
     #endregion
 

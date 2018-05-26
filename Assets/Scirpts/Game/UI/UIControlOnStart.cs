@@ -28,17 +28,15 @@ public class UIControlOnStart : MonoBehaviour {
     }
 
     private void OnGameStart() {
-        //if (PlayerPrefs.HasKey("StuckSceneIndex")) {
-        //    levelLoader.LoadLevel(PlayerPrefs.GetInt("StuckSceneIndex"));
-        //} else {
-        //    OnGameRestart();
-        //}
         OnGameRestart();
     }
 
     private void OnGameRestart() {
         levelLoader.LoadLevelFromBeginning();
-        GameController.GetInstance.ResetGame();
+
+        //if (GameController.GetInstance != null) {
+        //    GameController.GetInstance.ResetGame();
+        //}
     }
 
     private void OnEnterGameCenter() {

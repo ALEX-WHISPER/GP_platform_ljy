@@ -31,6 +31,7 @@ namespace PC2D
         // Update is called once per frame
         void Update()
         {
+            //Debug.Log("cur state: " + _motor.motorState);
             if (_motor.motorState == PlatformerMotor2D.MotorState.OnGround) {
                 _animator.SetBool("ground", true);
             }
@@ -72,17 +73,20 @@ namespace PC2D
                 } else if (_motor.motorState == PlatformerMotor2D.MotorState.Slipping) {
                     _animator.Play("Slip");
                 } else if (_motor.motorState == PlatformerMotor2D.MotorState.Dashing) {
-                    _animator.Play("Dash");
-                    _animator.Play("PlayerSlide");
+                    //_animator.Play("Dash");
+                    //_animator.Play("PlayerSlide");
                 } else if (_motor.motorState == PlatformerMotor2D.MotorState.NormalWave) {
-                    _animator.SetTrigger("wave");
+                    //_animator.SetTrigger("wave");
                 } else if (_motor.motorState == PlatformerMotor2D.MotorState.JumpWave) {
                     _animator.SetTrigger("jumpWave");
                     _motor.EndJumpAttack();
                 } else if (_motor.motorState == PlatformerMotor2D.MotorState.NormalThrow) {
-                    _animator.SetTrigger("throw");
+                    //_animator.SetTrigger("throw");
+                    //_animator.Play("PlayerThrow");
                 } else if (_motor.motorState == PlatformerMotor2D.MotorState.JumpThrow) {
-                    _animator.SetTrigger("jumpThrow");
+                    //_animator.SetTrigger("jumpThrow");
+                    //_animator.Play("PlayerJumpThrow");
+
                     _motor.EndJumpAttack();
 
                 } else {

@@ -75,7 +75,7 @@ public class LevelLoader : MonoBehaviour {
     }
 
     IEnumerator LoadLevelAsync(int sceneIndex) {
-        if (sceneIndex >= SceneManager.sceneCountInBuildSettings - 1) {
+        if (sceneIndex > SceneManager.sceneCountInBuildSettings - 1) {
             sceneIndex = 0;
         }
 

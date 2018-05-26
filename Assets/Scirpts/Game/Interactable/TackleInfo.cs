@@ -48,6 +48,8 @@ public class TackleInfo: MonoBehaviour {
 
         if (m_Player != null) {
             this.onPickUp += m_Player.GetComponent<PlayerTackleControl>().OnTacklePickedUp;
+        } else {
+            Debug.Log("m_Player is null, function: onTacklePickedUp from PlayerTackleControl added failed");
         }
     }
 

@@ -97,6 +97,8 @@ public class Damageable : MonoBehaviour {
         OnHealthSet.Invoke(this);
 
         OnGainHealth.Invoke(amount, this);
+
+        Debug.Log("Gain health, curHealth: " + m_CurrentHealth);
     }
 
     public void SetHealth(int amount) {

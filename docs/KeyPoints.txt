@@ -52,10 +52,3 @@
 		Resolution Adaption
 
 		Nothing Selected
-
-	结果测试及性能分析
-		测试概要
-			测试环境
-			测试范围
-
-		性能分析

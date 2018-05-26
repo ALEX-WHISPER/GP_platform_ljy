@@ -672,8 +672,10 @@ public class PlatformerMotor2D : MonoBehaviour
 
         if (!IsOnGround()) {
             motorState = MotorState.JumpWave;
+            Debug.Log("jump wave");
         } else {
             motorState = MotorState.NormalWave;
+            Debug.Log("normal wave: " + motorState);
         }
 
         if (OnFireSkill != null) {
