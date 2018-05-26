@@ -28,6 +28,8 @@ public class GameController : MonoBehaviour {
         } else {
             Destroy(gameObject);
         }
+
+        levelLoader = GetComponent<LevelLoader>();
     }
     
     private void Update() {
@@ -45,7 +47,7 @@ public class GameController : MonoBehaviour {
             gameOverPanel.SetActive(false);
         }
 
-        GetComponent<LevelLoader>().ResetUI();
+        levelLoader.ResetUI();
     }
 
     public void ResetGame() {
@@ -81,6 +83,6 @@ public class GameController : MonoBehaviour {
     }
 
     public void OnPassedLevel() {
-        GetComponent<LevelLoader>().LoadNextLevelOnDelay(0.5f);
+        levelLoader.LoadNextLevelOnDelay(0.5f);
     }
 }

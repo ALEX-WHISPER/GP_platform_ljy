@@ -32,6 +32,7 @@ public class PlayerHealth : MonoBehaviour {
 
     public void PlayerReborn() {
         m_Animator.SetTrigger(m_HashReborn);
+        m_PlayerDamageable.SetInitialHealth();
     }
 
     public void OnPlayerGetHurt(Damager damager, Damageable damageable) {

@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(PlatformerMotor2D))]
 public class PlayerController2D : MonoBehaviour
 {
+    public Vector2 playerInitPos_Level0;
     public Vector2 playerInitPos_Level1;
     public Vector2 playerInitPos_Level2;
 
@@ -176,26 +177,24 @@ public class PlayerController2D : MonoBehaviour
         
         if(Input.GetKeyDown(PC2D.Input.START_SLIDE))
         {
-            _motor.Dash();
             //m_Animator.SetTrigger("slide");
             m_Animator.Play("PlayerSlide");
+            _motor.Dash();
         }
 
         if (Input.GetKeyDown(PC2D.Input.WAVE_SWORD)) {
             _motor.Wave();
             if (_motor.motorState == PlatformerMotor2D.MotorState.JumpWave) {
                 m_Animator.SetTrigger("jumpWave");
-                //Invoke("EnableMeleeAttack", 0.2f);
-                meleeAttack.gameObject.SetActive(true);
             } else {
                 m_Animator.SetTrigger("wave");
-                meleeAttack.gameObject.SetActive(true);
             }
+            meleeAttack.gameObject.SetActive(true);
         }
 
         if (Input.GetKeyUp(PC2D.Input.WAVE_SWORD)) {
             meleeAttack.gameObject.SetActive(false);
-            //meleeAttack.DisableDamage();
+            meleeAttack.DisableDamage();
         }
 
         if (Input.GetKeyDown(PC2D.Input.THROW_DAGGER)) {
@@ -208,30 +207,31 @@ public class PlayerController2D : MonoBehaviour
         }
     }
 
-    private void EnableMeleeAttack() {
-        //meleeAttack.EnableDamage();
-        meleeAttack.gameObject.SetActive(true);
-    }
-
     private void OnSceneChanged(Scene from, Scene to) {
         GameController.GetInstance.ResetUI();
         Debug.Log(string.Format("Scene changed from {0} to {1}", from.name, to.name));
         if (to.name == "_Start") {
             //  disable player movement
+            GetComponent<PlayerHealth>().PlayerReborn();
             DisableMovement();
             transform.GetComponent<PlatformerMotor2D>().frozen = true;
         } else {
-            if (to.name == "level1") {
-                Debug.Log("to.name == level1, playerInitPos is: " + playerInitPos_Level1);
+            if (to.name == "level0") {
+                transform.localPosition = Vector3.zero;
+                transform.parent.localPosition = this.playerInitPos_Level0;
+            }
 
+            if (to.name == "level1") {
                 transform.localPosition = Vector3.zero;
                 transform.parent.localPosition = this.playerInitPos_Level1;
             } else if (to.name == "level2") {
                 transform.localPosition = Vector3.zero;
                 transform.parent.localPosition = this.playerInitPos_Level2;
             }
-            //EnableMovement();
-            //transform.GetComponent<PlatformerMotor2D>().frozen = false;
+
+            EnableMovement();
+            transform.GetComponent<PlatformerMotor2D>().frozen = false;
+            Camera.main.GetComponent<UnityStandardAssets._2D.Camera2DFollow>().target = transform;
         }
     }
 }
