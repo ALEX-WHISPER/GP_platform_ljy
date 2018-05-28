@@ -39,9 +39,9 @@ TagManager:
   - Enemy
   - Boundary
   - Sting
-  - 
-  - 
-  - 
+  - StartMenu
+  - EatingDoor
+  - PlayerDamager
   - 
   - 
   - 

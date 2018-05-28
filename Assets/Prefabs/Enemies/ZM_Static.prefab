@@ -19,7 +19,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4074293192569528}
-  - component: {fileID: 61035029310493430}
   - component: {fileID: 114740239954113940}
   m_Layer: 13
   m_Name: MeleeDamager
@@ -37,7 +36,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4717828532590602}
   - component: {fileID: 114535023408323560}
-  - component: {fileID: 70783724311704054}
   m_Layer: 13
   m_Name: ContactDamager
   m_TagString: Untagged
@@ -62,7 +60,7 @@ GameObject:
   - component: {fileID: 114932456739713052}
   m_Layer: 13
   m_Name: ZM_Static
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -100,7 +98,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1817884319695740}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.7399998, y: -0.063333355, z: 0}
+  m_LocalPosition: {x: -12.63, y: 5.28, z: 0}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_Children:
   - {fileID: 4074293192569528}
@@ -128,31 +126,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!61 &61035029310493430
-BoxCollider2D:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1533855945216034}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.6114001, y: -0.57125664}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1.9098091, y: 2.7425132}
-  m_EdgeRadius: 0
 --- !u!70 &70119914457493154
 CapsuleCollider2D:
   m_ObjectHideFlags: 1
@@ -163,21 +136,6 @@ CapsuleCollider2D:
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.34, y: -0.30613273}
-  m_Size: {x: 1.72, y: 3.75}
-  m_Direction: 0
---- !u!70 &70783724311704054
-CapsuleCollider2D:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1606105756997216}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.34, y: -0.30613273}
@@ -220,9 +178,10 @@ MonoBehaviour:
   gravity: 10
   patrolingForwardDistance: 0
   watchDuration: 2
+  stopDistance: 0.2
   viewDirection: 0
   viewFov: 88
-  viewDistance: 2
+  viewDistance: 3
   timeBeforeTargetLost: 0.5
   meleeRange: 2
   meleeDamager: {fileID: 114740239954113940}
@@ -256,8 +215,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
-  offset: {x: 0, y: 1}
-  size: {x: 2.5, y: 1}
+  offset: {x: -0.16777706, y: -0.3757627}
+  size: {x: 2.1644459, y: 3.7515254}
+  offsetBasedOnSpriteFacing: 1
+  spriteRenderer: {fileID: 0}
   canHitTriggers: 0
   disableDamageAfterHit: 0
   forceRespawn: 0
@@ -267,7 +228,18 @@ MonoBehaviour:
     m_Bits: 512
   OnDamageableHit:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: Damager+DamagableEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
   OnNonDamageableHit:
@@ -287,8 +259,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
-  offset: {x: 0, y: 1}
-  size: {x: 2.5, y: 1}
+  offset: {x: 0.5751151, y: -0.40266132}
+  size: {x: 2.2202303, y: 3.5029879}
+  offsetBasedOnSpriteFacing: 1
+  spriteRenderer: {fileID: 0}
   canHitTriggers: 0
   disableDamageAfterHit: 0
   forceRespawn: 0
@@ -298,7 +272,18 @@ MonoBehaviour:
     m_Bits: 512
   OnDamageableHit:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: Damager+DamagableEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
   OnNonDamageableHit:
@@ -411,7 +396,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 3ed64e83b0bba4444928c814f791efbf, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 1
+  m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 4.3, y: 5.19}

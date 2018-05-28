@@ -376,8 +376,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
-  offset: {x: 1.5, y: 1}
-  size: {x: 2.5, y: 1}
+  offset: {x: 0, y: 0}
+  size: {x: 0.2, y: 1.5}
+  offsetBasedOnSpriteFacing: 1
+  spriteRenderer: {fileID: 0}
   canHitTriggers: 0
   disableDamageAfterHit: 1
   forceRespawn: 0
@@ -469,8 +471,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
-  offset: {x: 1.5, y: 1}
-  size: {x: 2.5, y: 1}
+  offset: {x: 0, y: 0}
+  size: {x: 0.2, y: 1.5}
+  offsetBasedOnSpriteFacing: 1
+  spriteRenderer: {fileID: 0}
   canHitTriggers: 0
   disableDamageAfterHit: 1
   forceRespawn: 0
@@ -511,8 +515,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
-  offset: {x: 1.5, y: 1}
-  size: {x: 2.5, y: 1}
+  offset: {x: 0, y: 0}
+  size: {x: 0.2, y: 1.5}
+  offsetBasedOnSpriteFacing: 1
+  spriteRenderer: {fileID: 0}
   canHitTriggers: 0
   disableDamageAfterHit: 1
   forceRespawn: 0

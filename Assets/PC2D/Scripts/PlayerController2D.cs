@@ -1,11 +1,15 @@
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 /// <summary>
 /// This class is a simple example of how to build a controller that interacts with PlatformerMotor2D.
 /// </summary>
 [RequireComponent(typeof(PlatformerMotor2D))]
 public class PlayerController2D : MonoBehaviour
 {
+    public Vector2 playerInitPos_Level0;
+    public Vector2 playerInitPos_Level1;
+    public Vector2 playerInitPos_Level2;
+
     private static PlayerController2D _instance;
     
     private PlatformerMotor2D _motor;
@@ -13,6 +17,8 @@ public class PlayerController2D : MonoBehaviour
     private bool _enableOneWayPlatforms;
     private bool _oneWayPlatformsAreWalls;
     private bool _enableMove;
+    private Animator m_Animator;
+    private Damager meleeAttack;
 
     public static PlayerController2D GetInstance {
         get {
@@ -47,11 +53,19 @@ public class PlayerController2D : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    
+
+    private void OnEnable() {
+        SceneManager.activeSceneChanged += OnSceneChanged;
+    }
+
     void Start()
     {
         _motor = GetComponent<PlatformerMotor2D>();
+        m_Animator = GetComponent<Animator>();
+        meleeAttack = GetComponentInChildren<Damager>();
+
         EnableMovement();
+        meleeAttack.gameObject.SetActive(false);
     }
     
     void FreedomStateSave(PlatformerMotor2D motor)
@@ -160,19 +174,64 @@ public class PlayerController2D : MonoBehaviour
         {
             _motor.fallFast = false;
         }
-
-        //if (Input.GetButtonDown(PC2D.Input.DASH))
+        
         if(Input.GetKeyDown(PC2D.Input.START_SLIDE))
         {
+            //m_Animator.SetTrigger("slide");
+            m_Animator.Play("PlayerSlide");
             _motor.Dash();
         }
 
         if (Input.GetKeyDown(PC2D.Input.WAVE_SWORD)) {
             _motor.Wave();
+            if (_motor.motorState == PlatformerMotor2D.MotorState.JumpWave) {
+                m_Animator.SetTrigger("jumpWave");
+            } else {
+                m_Animator.SetTrigger("wave");
+            }
+            meleeAttack.gameObject.SetActive(true);
+        }
+
+        if (Input.GetKeyUp(PC2D.Input.WAVE_SWORD)) {
+            meleeAttack.gameObject.SetActive(false);
+            meleeAttack.DisableDamage();
         }
 
         if (Input.GetKeyDown(PC2D.Input.THROW_DAGGER)) {
             _motor.Throw();
+            if (_motor.motorState == PlatformerMotor2D.MotorState.JumpThrow) {
+                m_Animator.SetTrigger("jumpThrow");
+            } else {
+                m_Animator.SetTrigger("throw");
+            }
+        }
+    }
+
+    private void OnSceneChanged(Scene from, Scene to) {
+        GameController.GetInstance.ResetUI();
+        Debug.Log(string.Format("Scene changed from {0} to {1}", from.name, to.name));
+        if (to.name == "_Start") {
+            //  disable player movement
+            GetComponent<PlayerHealth>().PlayerReborn();
+            DisableMovement();
+            transform.GetComponent<PlatformerMotor2D>().frozen = true;
+        } else {
+            if (to.name == "level0") {
+                transform.localPosition = Vector3.zero;
+                transform.parent.localPosition = this.playerInitPos_Level0;
+            }
+
+            if (to.name == "level1") {
+                transform.localPosition = Vector3.zero;
+                transform.parent.localPosition = this.playerInitPos_Level1;
+            } else if (to.name == "level2") {
+                transform.localPosition = Vector3.zero;
+                transform.parent.localPosition = this.playerInitPos_Level2;
+            }
+
+            EnableMovement();
+            transform.GetComponent<PlatformerMotor2D>().frozen = false;
+            Camera.main.GetComponent<UnityStandardAssets._2D.Camera2DFollow>().target = transform;
         }
     }
 }

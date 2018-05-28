@@ -31,6 +31,7 @@ namespace PC2D
         // Update is called once per frame
         void Update()
         {
+            //Debug.Log("cur state: " + _motor.motorState);
             if (_motor.motorState == PlatformerMotor2D.MotorState.OnGround) {
                 _animator.SetBool("ground", true);
             }
@@ -63,26 +64,29 @@ namespace PC2D
 
                 if (_motor.motorState == PlatformerMotor2D.MotorState.Falling ||
                                  _motor.motorState == PlatformerMotor2D.MotorState.FallingFast) {
-                    _animator.Play("Fall");
+                    //_animator.Play("Fall");
                 } else if (_motor.motorState == PlatformerMotor2D.MotorState.WallSliding ||
                            _motor.motorState == PlatformerMotor2D.MotorState.WallSticking) {
-                    _animator.Play("Cling");
+                    //_animator.Play("Cling");
                 } else if (_motor.motorState == PlatformerMotor2D.MotorState.OnCorner) {
-                    _animator.Play("On Corner");
+                    //_animator.Play("On Corner");
                 } else if (_motor.motorState == PlatformerMotor2D.MotorState.Slipping) {
-                    _animator.Play("Slip");
+                    //_animator.Play("Slip");
                 } else if (_motor.motorState == PlatformerMotor2D.MotorState.Dashing) {
-                    _animator.Play("Dash");
-                    _animator.Play("PlayerSlide");
+                    //_animator.Play("PlayerSlide");
+                    //_animator.SetTrigger("slide");
                 } else if (_motor.motorState == PlatformerMotor2D.MotorState.NormalWave) {
-                    _animator.SetTrigger("wave");
+                    //_animator.SetTrigger("wave");
                 } else if (_motor.motorState == PlatformerMotor2D.MotorState.JumpWave) {
-                    _animator.SetTrigger("jumpWave");
+                    //_animator.SetTrigger("jumpWave");
                     _motor.EndJumpAttack();
                 } else if (_motor.motorState == PlatformerMotor2D.MotorState.NormalThrow) {
-                    _animator.SetTrigger("throw");
+                    //_animator.SetTrigger("throw");
+                    //_animator.Play("PlayerThrow");
                 } else if (_motor.motorState == PlatformerMotor2D.MotorState.JumpThrow) {
-                    _animator.SetTrigger("jumpThrow");
+                    //_animator.SetTrigger("jumpThrow");
+                    //_animator.Play("PlayerJumpThrow");
+
                     _motor.EndJumpAttack();
 
                 } else {

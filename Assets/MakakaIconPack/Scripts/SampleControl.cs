@@ -3,14 +3,23 @@ using System.Collections;
 
 public class SampleControl : MonoBehaviour 
 {
-	public Animator gameOverMenuAnimator;
+    public float showDelay = 0.2f;
 
-	void Start () 
+    private Animator m_MenuAnimator;
+
+    private void Awake() {
+        m_MenuAnimator = GetComponent<Animator>();        
+    }
+
+    void Start () 
 	{
-		if(gameOverMenuAnimator)
-		{
-			gameOverMenuAnimator.SetTrigger("Show");
-			Debug.Log("Game Over Menu Show");
-		}
+        Invoke("AutoShowMenu", showDelay);
 	}
+
+    private void AutoShowMenu() {
+        if (m_MenuAnimator) {
+            m_MenuAnimator.SetTrigger("Show");
+            Debug.Log("Game Over Menu Show");
+        }
+    }
 }

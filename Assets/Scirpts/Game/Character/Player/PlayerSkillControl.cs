@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class PlayerSkillControl : MonoBehaviour {
     public GameObject m_DaggersPrefab;
-
     public Transform m_EmitPoint;
 
+    private Damager meleeAttack;
     private PlatformerMotor2D _motor;
     private SpriteRenderer playerSprite;
 

@@ -10,9 +10,17 @@ public class LevelLoader : MonoBehaviour {
     public string loadedHintText = "Hit 'SPACE' to continue...";
 
     public void ResetUI() {
+        if (loadingPanel == null) {
+            return;
+        }
+
         loadingPanel.SetActive(false);
         loadingBar.transform.Find("LoadingProgText").GetComponent<Text>().text = 0 + "%";
         loadingBar.value = 0f;
+    }
+
+    private void Start() {
+        ResetUI();
     }
 
     private void Update() {
@@ -20,12 +28,18 @@ public class LevelLoader : MonoBehaviour {
             Debug.Log("get key: LeftShift");
             if (Input.GetKeyDown(KeyCode.RightArrow)) {
                 Debug.Log("get key: RightArrow");
-                LoadNextLevel(SceneManager.GetActiveScene().buildIndex + 1);
+                LoadLevelWithUISettings(SceneManager.GetActiveScene().buildIndex + 1);
             }
         }
     }
 
-    public void LoadNextLevel(int sceneIndex) {
+    //  load the next level
+    public void LoadNextLevelOnDelay(float delay) {
+        Invoke("LoadNextLevel", delay);
+    }
+
+    //  load level with activate and deactivate ui elements
+    public void LoadLevelWithUISettings(int sceneIndex) {
         if (loadingPanel != null) {
             loadingPanel.SetActive(true);
         }
@@ -36,7 +50,35 @@ public class LevelLoader : MonoBehaviour {
         StartCoroutine(LoadLevelAsync(sceneIndex));
     }
 
+    //  load level0
+    public void LoadLevelFromBeginning() {
+        if (loadingPanel != null) {
+            loadingPanel.SetActive(true);
+        }
+        StartCoroutine(LoadLevelAsync(1));
+    }
+
+    //  load level based on para
+    public void LoadLevel(int sceneIndex) {
+        if (loadingPanel != null) {
+            loadingPanel.SetActive(true);
+        }
+        StartCoroutine(LoadLevelAsync(sceneIndex));
+    }
+
+    private void LoadNextLevel() {
+        if (loadingPanel != null) {
+            loadingPanel.SetActive(true);
+        }
+
+        StartCoroutine(LoadLevelAsync(SceneManager.GetActiveScene().buildIndex + 1));
+    }
+
     IEnumerator LoadLevelAsync(int sceneIndex) {
+        if (sceneIndex > SceneManager.sceneCountInBuildSettings - 1) {
+            sceneIndex = 0;
+        }
+
         yield return new WaitForSeconds(0.2f);
 
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneIndex); //  异步加载目标场景

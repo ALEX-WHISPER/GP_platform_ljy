@@ -62,7 +62,7 @@ GameObject:
   - component: {fileID: 114176279742524216}
   m_Layer: 13
   m_Name: ZM_Patrol
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -334,6 +334,7 @@ MonoBehaviour:
   gravity: 10
   patrolingForwardDistance: 2
   watchDuration: 2
+  stopDistance: 0.2
   viewDirection: 0
   viewFov: 88
   viewDistance: 3.5

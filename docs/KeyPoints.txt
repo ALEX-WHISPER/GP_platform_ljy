@@ -1,0 +1,54 @@
+需求分析及项目方案
+	需求分析
+		功能需求
+		系统约束条件
+
+	项目方案
+		项目特色
+		技术简介：A B C ...
+			跨场景存储
+				Singleton
+				DontDestroyOnLoad()
+
+			对象池			
+
+			关卡异步加载
+				SceneManager.AsynLoadScene()
+			
+			瓦片调色板			
+				Tile Palette	
+
+			帧动画
+				Animator Override Controller
+
+			协同程序
+
+		开发工具和运行环境		CHECK
+		项目实施计划
+
+	项目设计及实现
+		功能模块的设计与实现
+			系统整体框图	CHECK
+			模块的设计与实现：A B C ...
+				AI System
+				Prop System
+				Inventory System
+				Skill System
+				UI
+				Animation
+				Player Control
+				Scene Loading
+
+	特殊问题及解决方案
+		问题1：
+			问题描述
+			解决方案
+			结果
+
+		问题2：
+			...
+			...
+			...
+		Resolution Adaption
+
+		Nothing Selected
